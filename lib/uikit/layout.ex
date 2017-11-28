@@ -2,6 +2,7 @@ defmodule UIKit.Attr do
   defstruct [
     module: nil,
     styles: [],
+    seed: true,
     boolean: false,
   ]
 
@@ -18,7 +19,7 @@ defmodule UIKit.Attr do
 
   def build(%__MODULE__{} = attr) do
     for = attr.module
-    class_seed = if(attr.boolean, do: [], else: ["uk-#{for}"])
+    class_seed = if(attr.boolean || !attr.seed, do: [], else: ["uk-#{for}"])
     boolean = if(attr.boolean, do: ["uk-#{for}"], else: [])
     classes = Enum.map(attr.styles, &resolve_class(for, &1))
 
@@ -56,6 +57,7 @@ defmodule UIKit.StyleHelpers do
   def position(sym), do: {:position, sym}
   def margin(sym), do: {:margin, sym}
   def flex(sym), do: {:flex, sym}
+  def text(sym), do: {:text, sym}
   def width(kind, cols, over, media), do: {:width, {kind, cols, over, media}}
 end
 
@@ -95,6 +97,45 @@ defmodule UIKit.Layout.Grid do
   defmacro uk_grid(style \\ nil, do: block) do
     quote location: :keep do
       div(nil, (%Attr{module: :grid, boolean: true} | unquote(style)) |> Attr.build()) do
+        unquote(block)
+      end
+    end
+  end
+end
+
+defmodule UIKit.Layout.Heading do
+  use Taggart.HTML
+  alias UIKit.Attr
+
+  defmacro uk_heading(style \\ nil, do: block) do
+    quote location: :keep do
+      h1(nil, (%Attr{module: :heading, seed: false} | unquote(style)) |> Attr.build()) do
+        unquote(block)
+      end
+    end
+  end
+end
+
+defmodule UIKit.Layout.Width do
+  use Taggart.HTML
+  alias UIKit.Attr
+
+  defmacro uk_width(style \\ nil, do: block) do
+    quote location: :keep do
+      div(nil, (%Attr{module: :width, seed: false} | unquote(style)) |> Attr.build()) do
+        unquote(block)
+      end
+    end
+  end
+end
+
+defmodule UIKit.Layout.Text do
+  use Taggart.HTML
+  alias UIKit.Attr
+
+  defmacro uk_text(style \\ nil, do: block) do
+    quote location: :keep do
+      p(nil, (%Attr{module: :text, seed: false} | unquote(style)) |> Attr.build()) do
         unquote(block)
       end
     end
