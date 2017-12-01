@@ -1,8 +1,7 @@
 defmodule UIKit.GridTest do
   use ExUnit.Case
   use Taggart.HTML
-  import UIKit.Layout.Grid
-  import UIKit.StyleHelpers
+  use UIKit
 
   test "renders default grid" do
     html =

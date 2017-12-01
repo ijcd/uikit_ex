@@ -1,8 +1,7 @@
 defmodule UIKit.HeadingTest do
   use ExUnit.Case
   use Taggart.HTML
-  import UIKit.Layout.Heading
-  import UIKit.StyleHelpers
+  use UIKit
 
   test "renders default heading" do
     html =

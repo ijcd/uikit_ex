@@ -1,8 +1,7 @@
 defmodule UIKit.ContainerTest do
   use ExUnit.Case
   use Taggart.HTML
-  import UIKit.Layout.Container
-  import UIKit.StyleHelpers
+  use UIKit
 
   test "renders default container" do
     html =

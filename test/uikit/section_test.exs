@@ -1,8 +1,7 @@
 defmodule UIKit.SectionTest do
   use ExUnit.Case
   use Taggart.HTML
-  import UIKit.Layout.Section
-  import UIKit.StyleHelpers
+  use UIKit
 
   test "renders default section" do
     html =

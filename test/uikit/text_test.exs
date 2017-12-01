@@ -1,8 +1,7 @@
 defmodule UIKit.TextTest do
   use ExUnit.Case
   use Taggart.HTML
-  import UIKit.Layout.Text
-  import UIKit.StyleHelpers
+  use UIKit
 
   test "renders default text with param" do
     html =

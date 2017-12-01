@@ -1,8 +1,7 @@
 defmodule UIKit.WidthTest do
   use ExUnit.Case
   use Taggart.HTML
-  import UIKit.Layout.Width
-  import UIKit.StyleHelpers
+  use UIKit
 
   test "renders default width with param" do
     html =
