@@ -47,7 +47,9 @@ defmodule UIKit do
 
   """
   def uk_style(%Attr{} = attr) do
-    Attr.build(attr)
+    attr
+    |> Attr.build(seed: false)
+    |> Keyword.get(:class)
   end
 
   @doc """

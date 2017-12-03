@@ -19,12 +19,18 @@ defmodule UIKit.Attr do
   def join(%__MODULE__{} = a, b), do: join(a, new(b))
   def join(a, b), do: join(new(a), b)
 
-  def build(%__MODULE__{} = attr) do
+  def build(%__MODULE__{} = attr, opts \\ []) do
     for = attr.name
-    class_seed = if(attr.seed, do: ["uk-#{for}"], else: [])
-    boolean_attrs = if(attr.boolean, do: ["uk-#{for}": true], else: [])
-    classes = Enum.map(attr.styles, &resolve_class(for, &1))
 
+    # merge opts into attr
+    attr = struct(attr, opts)
+
+    # work out how to treat the boolean attribute
+    boolean_attrs = if(attr.boolean, do: ["uk-#{for}": true], else: [])
+
+    # work out the classes to include
+    class_seed = if(attr.seed, do: ["uk-#{for}"], else: [])
+    classes = Enum.map(attr.styles, &resolve_class(for, &1))
     joined_classes =
       case (class_seed ++ classes) do
         [] -> nil
