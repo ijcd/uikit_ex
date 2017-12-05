@@ -1,6 +1,6 @@
-defmodule UIKit.Layout do
+defmodule UIKit.Element.Layout do
   import UIKit
-  alias UIKit.Attr
+  alias UIKit.AttrBuilder
 
   # could be style?
   @column_styles [
@@ -11,14 +11,6 @@ defmodule UIKit.Layout do
 
   defcomponent :column, styles: @column_styles
   defstyle :column, styles: @column_styles
-
-  defcomponent :comment, tag: :article, styles: :primary
-  defcomponent :comment_header, tag: :header
-  defcomponent :comment_avatar, tag: :img
-  defcomponent :comment_title
-  defcomponent :comment_meta
-  defcomponent :comment_body
-  defcomponent :comment_list, tag: :ul
 
   defcomponent :container,
     styles: [
@@ -79,6 +71,18 @@ defmodule UIKit.Layout do
   defcomponent :flex, styles: @flex_styles
   defstyle :flex, styles: @flex_styles
 
+  @grid_styles [
+    # style
+    :small,
+    :medium,
+    :large,
+    :collapse,
+    # divider
+    :divider,
+    # height
+    :match,
+    :item_match
+  ]
 
   # <div class="uk-flex-center" uk-grid>
   #     <div></div>
@@ -86,23 +90,15 @@ defmodule UIKit.Layout do
   # </div>
   defcomponent :grid,
     seed: false,
-    boolean: true,
-    styles: [
-      # style
-      :small,
-      :medium,
-      :large,
-      :collabpse,
-      # divider
-      :divider,
-      # height
-      :match,
-      :item_match
-    ],
+    attr: true,
+    styles: @grid_styles,
     component_options: [
       :margin,
       :first_column
     ]
+  defstyle :grid,
+    styles: @grid_styles,
+    attr: true
 
   defcomponent :grid_parallax,
     component_options: [

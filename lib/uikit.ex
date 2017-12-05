@@ -1,5 +1,5 @@
 defmodule UIKit do
-  alias UIKit.Attr
+  alias UIKit.AttrBuilder
 
   @moduledoc """
   Core UIKit wrapping code.
@@ -15,11 +15,11 @@ defmodule UIKit do
   """
   defmacro __using__(_opts) do
     quote do
-      import UIKit.Behavior
-      import UIKit.Component
-      import UIKit.Layout
-      import UIKit.Navigation
-      import UIKit.Style
+      import UIKit.Element.Behavior
+      import UIKit.Element.Component
+      import UIKit.Element.Layout
+      import UIKit.Element.Navigation
+      import UIKit.Element.Style
       defdelegate a | b, to: UIKit
       defdelegate uk_style(style), to: UIKit
     end
@@ -34,7 +34,7 @@ defmodule UIKit do
       %Style{...}
 
   """
-  def a | b, do: Attr.join(a, b)
+  def a | b, do: AttrBuilder.join(a, b)
 
   @doc """
   Useful for embedding UIKit styles into other libraries, such as Phoenix.HTML
@@ -46,10 +46,10 @@ defmodule UIKit do
       [class: "uk-width-auto uk-position-bottom"]
 
   """
-  def uk_style(%Attr{} = attr) do
+  def uk_style(attr) do
     attr
-    |> Attr.build(seed: false)
-    |> Keyword.get(:class)
+    |> AttrBuilder.new()
+    |> AttrBuilder.build()
   end
 
   @doc """
@@ -65,27 +65,25 @@ defmodule UIKit do
       name: name,
       tag: Keyword.get(opts, :tag, :div),
       seed: Keyword.get(opts, :seed, true),
-      boolean: Keyword.get(opts, :boolean, false),
+      attr: Keyword.get(opts, :attr, false),
     ] do
+      use Taggart.HTML
+
       defmacro unquote(:"uk_#{name}")(style \\ nil, do: block) do
         name = unquote(name)
         tag = unquote(tag)
         seed = unquote(seed)
-        boolean = unquote(boolean)
+        attr = unquote(attr)
 
         quote location: :keep do
           name = unquote(name)
           tag = unquote(tag)
           seed = unquote(seed)
-          boolean = unquote(boolean)
+          attr = unquote(attr)
 
-          attr0 = %Attr{
-            name: name,
-            seed: seed,
-            boolean: boolean
-          }
+          attr0 = AttrBuilder.new(name, seed: seed, attr: attr)
 
-          unquote(tag)(nil, Attr.build(attr0 | unquote(style))) do
+          unquote(tag)(nil, AttrBuilder.build(attr0 | unquote(style))) do
             unquote(block)
           end
         end
@@ -101,10 +99,10 @@ defmodule UIKit do
       iex> defstyle :width, styles: [:auto, :expand]
 
   """
-  defmacro defstyle(name, _opts \\ []) do
+  defmacro defstyle(name, opts \\ []) do
     quote location: :keep do
       def unquote(name)(style \\ nil) do
-        {unquote(name), style}
+        AttrBuilder.new(unquote(name), styles: [style], attr: unquote(opts[:attr]))
       end
     end
   end

@@ -1,6 +1,6 @@
-defmodule UIKit.Behavior do
+defmodule UIKit.Element.Behavior do
   import UIKit
-  alias UIKit.Attr
+  alias UIKit.AttrBuilder
 
   # TODO: notifications are all JS -- how to handle this? Event components?
   # IDEA: event components combined with Presto to forward notifications?
@@ -76,7 +76,7 @@ defmodule UIKit.Behavior do
   # TODO: spreadsheet compare seed/boolean (T/F)
   defcomponent :sticky,
     seed: false,
-    boolean: true,
+    attr: true,
     component_options: [
       :top,
       :bottom,

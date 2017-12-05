@@ -1,10 +1,11 @@
-defmodule UIKit.Navigation do
+defmodule UIKit.Element.Navigation do
   import UIKit
-  alias UIKit.Attr
+  alias UIKit.AttrBuilder
 
   # <li class="uk-disabled"><a href=""></a></li>
   defcomponent :breadcrumb,
     tag: :ul
+  defcomponent :breadcrumb_item, tag: :li
 
   # <li class="uk-active"><a href=""></a></li>
   # <div class="uk-position-relative uk-light">
@@ -21,6 +22,7 @@ defmodule UIKit.Navigation do
     styles: [
       :vertical
     ]
+  defcomponent :dotnav_item, tag: :li
 
   defcomponent :nav,
     styles: [
@@ -42,7 +44,7 @@ defmodule UIKit.Navigation do
   defcomponent :nav_parent_icon,
     tag: :ul,
     seed: false,
-    boolean: "uk-nav"
+    attr: "uk-nav"
   defcomponent :nav_header, tag: :li
   defcomponent :nav_footer, tag: :li
 
@@ -52,7 +54,7 @@ defmodule UIKit.Navigation do
   defcomponent :navbar,
     tag: :nav,
     seed: false,
-    boolean: "uk-navbar",
+    attr: "uk-navbar",
     component_options: [
       :align,
       :mode,
@@ -67,7 +69,7 @@ defmodule UIKit.Navigation do
     ]
   defcomponent :navbar_container,
     seed: false,
-    boolean: "uk-navbar",
+    attr: "uk-navbar",
     syltes: [
       :transparent
     ]
@@ -117,11 +119,12 @@ defmodule UIKit.Navigation do
       :divider,
       :pill
     ]
+  defcomponent :subnav_item
 
   defcomponent :tab,
     tag: :ul,
     seed: false,
-    boolean: true,
+    attr: true,
     styles: [
       :bottom,
       :left,
@@ -139,5 +142,5 @@ defmodule UIKit.Navigation do
 
   defcomponent :totop,
     seed: false,
-    boolean: true
+    attr: true
 end

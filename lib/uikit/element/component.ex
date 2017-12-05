@@ -1,12 +1,12 @@
-defmodule UIKit.Component do
+defmodule UIKit.Element.Component do
   import UIKit
-  alias UIKit.Attr
+  alias UIKit.AttrBuilder
 
   # <li class="uk-open"></li>
   defcomponent :accordion,
     tag: :ul,
     seed: false,
-    boolean: true,
+    attr: true,
     component_opts: [
       :targets,
       :active,
@@ -21,7 +21,7 @@ defmodule UIKit.Component do
 
   defcomponent :alert,
     seed: false,
-    boolean: true,
+    attr: true,
     styles: [
       :primary,
       :success,
@@ -33,7 +33,7 @@ defmodule UIKit.Component do
       :duration,
       :sel_close
     ]
-  defcomponent :alert_close, tag: :a,  boolean: "uk-close"
+  defcomponent :alert_close, tag: :a,  attr: "uk-close"
 
   # Use the .uk-text-lead class from the Text component to create a leading paragraph.
   defcomponent :article, tag: :article
@@ -143,7 +143,6 @@ defmodule UIKit.Component do
   # <div class="uk-card-badge uk-label"></div>
   defcomponent :card_badge
 
-
   # <button type="button" uk-close></button>
   # <a href="" uk-close></a>
   # <div uk-alert>
@@ -154,6 +153,16 @@ defmodule UIKit.Component do
   defboolean :close,
     styles: [:large],
     allowed_tags: [:a, :button]
+
+  defcomponent :comment, tag: :article, styles: :primary
+  defcomponent :comment_header, tag: :header
+  defcomponent :comment_avatar, tag: :img
+  defcomponent :comment_title, tag: :h4
+  defcomponent :comment_meta, tag: :ul
+  defcomponent :comment_meta_item, tag: :li
+  defcomponent :comment_body
+  defcomponent :comment_list, tag: :ul
+  defcomponent :comment_list_item, tag: :li
 
   defcomponent :countdown_days,
     component_options: [:date]
@@ -187,7 +196,7 @@ defmodule UIKit.Component do
 
   defcomponent :drop,
     seed: false,
-    boolean: true,
+    attr: true,
     styles: [
       :bottom_left,
       :bottom_center,
@@ -222,7 +231,7 @@ defmodule UIKit.Component do
 
   defcomponent :dropdown,
     seed: false,
-    boolean: true,
+    attr: true,
     styles: [
       :bottom_left,
       :bottom_center,
@@ -293,7 +302,7 @@ defmodule UIKit.Component do
     styles: [
       :flip
     ],
-    boolean: [icon: :user]
+    attr: [icon: :user]
   defcomponent :form_custom,
     component_options: [
       :target
@@ -326,6 +335,9 @@ defmodule UIKit.Component do
     styles: [
         :vertical
       ]
+  defcomponent :iconnav_item, tag: :li
+
+
 
   defcomponent :label,
     tag: :span,
@@ -337,7 +349,7 @@ defmodule UIKit.Component do
 
   defcomponent :lightbox,
     seed: false,
-    boolean: true,
+    attr: true,
     component_options: [
       :animation,
       :autoplay,
@@ -376,12 +388,13 @@ defmodule UIKit.Component do
       :striped,
       :large
     ]
+  defcomponent :list_item, tag: :li
 
   defboolean :marker
 
   defcomponent :modal,
     seed: false,
-    boolean: true,
+    attr: true,
     styles: [
       :conatiner,
       :full
@@ -407,7 +420,7 @@ defmodule UIKit.Component do
 
   defcomponent :offcanvas,
     seed: false,
-    boolean: true,
+    attr: true,
     component_options: [
       :mode,
       :flip,
@@ -447,7 +460,7 @@ defmodule UIKit.Component do
 
   defcomponent :slideshow,
     seed: false,
-    boolean: true,
+    attr: true,
     component_options: [
       :slide,
       :fade,
@@ -475,7 +488,7 @@ defmodule UIKit.Component do
 
   defcomponent :sortable,
     seed: false,
-    boolean: true,
+    attr: true,
     component_options: [
       :group,
       :animation,
@@ -496,7 +509,7 @@ defmodule UIKit.Component do
 
   defcomponent :switcher,
     seed: false,
-    boolean: true,
+    attr: true,
     component_options: [
       :connect,
       :toggle,
@@ -610,6 +623,7 @@ defmodule UIKit.Component do
     styles: [
       :vertical
     ]
+  defcomponent :thumnav_item, tag: :li
 
   defcomponent :tile,
     styles: [
@@ -622,7 +636,7 @@ defmodule UIKit.Component do
   # TODO: bring in comonent_option docs for all items
   defcomponent :toggle,
     seed: false,
-    boolean: true,
+    attr: true,
     tag: [:button, :a],
     component_options: [
       :target,
@@ -635,7 +649,7 @@ defmodule UIKit.Component do
 
   defcomponent :tooltip,
     seed: false,
-    boolean: true,
+    attr: true,
     component_options: [
       :pos,
       :offset,

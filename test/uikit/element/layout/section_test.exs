@@ -48,7 +48,6 @@ defmodule UIKit.SectionTest do
         end
       )
 
-
     assert html == "<div class=\"uk-section uk-section-muted uk-section-xsmall\"><h1>heading</h1>content</div>"
   end
 

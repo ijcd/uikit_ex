@@ -1,6 +1,6 @@
-defmodule UIKit.Style do
+defmodule UIKit.Element.Style do
   import UIKit
-  alias UIKit.Attr
+  alias UIKit.AttrBuilder
 
   # def padding(sym), do: {:padding, sym}
   # def position(sym), do: {:position, sym}
@@ -165,7 +165,7 @@ defmodule UIKit.Style do
   defstyle :dropcap
 
   defstyle :leader,
-    boolean: true,
+    attr: true,
     component_options: [
       :fill,
       :media
@@ -177,15 +177,15 @@ defmodule UIKit.Style do
     ]
 
   defstyle :svg,
-    boolean: true,
+    attr: true,
     allowed_tags: [:img]
 
   defstyle :gif,
-    boolean: true,
+    attr: true,
     allowed_tags: [:img]
 
   defstyle :video,
-    boolean: true,
+    attr: true,
     component_options: [
       :autoplay,
       :automute

@@ -30,7 +30,7 @@ defmodule UIKit.GridTest do
   test "renders grid with child width" do
     html =
       Phoenix.HTML.safe_to_string(
-        uk_grid(:match | width(:child, 1, 3, :m)) do
+        uk_grid(:match | child_width("1-3@m")) do
           h1("heading")
           "content"
         end
