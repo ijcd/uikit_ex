@@ -184,12 +184,12 @@ defmodule UIKit.Element.Style do
     attr: true,
     allowed_tags: [:img]
 
-  defstyle :video,
-    attr: true,
-    component_options: [
-      :autoplay,
-      :automute
-    ]
+  # defstyle :video,
+  #   attr: true,
+  #   component_options: [
+  #     :autoplay,
+  #     :automute
+  #   ]
 
   defstyle :blend,
     styles: [
