@@ -21,7 +21,7 @@ defmodule UIKit do
       import UIKit.Element.Navigation
       import UIKit.Element.Style
       defdelegate a | b, to: UIKit
-      defdelegate uk_style(style), to: UIKit
+      defdelegate uk_classes(style), to: UIKit
     end
   end
 
@@ -42,14 +42,14 @@ defmodule UIKit do
 
   ## Examples
 
-      iex> uk_style(width(:auto) | position(:bottom))
+      iex> uk_classes(width(:auto) | position(:bottom))
       [class: "uk-width-auto uk-position-bottom"]
 
   """
-  def uk_style(attr) do
+  def uk_classes(attr) do
     attr
-    |> AttrBuilder.new()
     |> AttrBuilder.build()
+    |> Keyword.get(:class)
   end
 
   @doc """
