@@ -69,7 +69,9 @@ defmodule UIKit.Element.Layout do
     ] |> List.flatten
 
   defcomponent :flex, styles: @flex_styles
-  defstyle :flex, styles: @flex_styles
+  defstyle :flex,
+    seed: true,
+    styles: @flex_styles
 
   @grid_styles [
     # style
@@ -106,8 +108,7 @@ defmodule UIKit.Element.Layout do
       :translate
     ]
 
-  defstyle :position,
-    styles: [
+  @position_styles styles: [
       # position
       :top,
       :left,
@@ -134,6 +135,10 @@ defmodule UIKit.Element.Layout do
       :fixed,
       :z_index
     ]
+  defcomponent :position,
+    seed: false,
+    styles: @position_styles
+  defstyle :position, styles: @position_styles
 
   # - uk-preserve-color
   # - uk-padding-remove-vertical

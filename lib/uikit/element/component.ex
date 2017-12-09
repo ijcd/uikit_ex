@@ -432,6 +432,7 @@ defmodule UIKit.Element.Component do
   defcomponent :offcanvas_close
 
   defstyle :overlay,
+    seed: true,
     styles: [
       :default,
       :primary

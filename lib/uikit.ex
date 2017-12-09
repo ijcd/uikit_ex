@@ -67,11 +67,11 @@ defmodule UIKit do
       seed: Keyword.get(opts, :seed, true),
       attr: Keyword.get(opts, :attr, false),
     ] do
-      use Taggart.HTML
+      require Taggart.HTML
 
-      defmacro unquote(:"uk_#{name}")(style \\ nil, do: block) do
+      defmacro unquote(:"uk_#{name}")(style \\ nil, opts \\ [], do: block) do
         name = unquote(name)
-        tag = unquote(tag)
+        tag = Keyword.get(opts, :tag, unquote(tag))
         seed = unquote(seed)
         attr = unquote(attr)
 
@@ -83,7 +83,7 @@ defmodule UIKit do
 
           attr0 = AttrBuilder.new(name, seed: seed, attr: attr)
 
-          unquote(tag)(nil, AttrBuilder.build(attr0 | unquote(style))) do
+          Taggart.HTML.unquote(tag)(nil, AttrBuilder.build(attr0 | unquote(style))) do
             unquote(block)
           end
         end
@@ -100,10 +100,32 @@ defmodule UIKit do
 
   """
   defmacro defstyle(name, opts \\ []) do
-    quote location: :keep do
-      def unquote(name)(style \\ nil) do
-        AttrBuilder.new(unquote(name), styles: [style], attr: unquote(opts[:attr]))
+    quote location: :keep, bind_quoted: [
+      name: name,
+      seed: Keyword.get(opts, :seed, false),
+      attr: Keyword.get(opts, :attr, false),
+    ] do
+      def unquote(name)(styles \\ nil)
+
+      def unquote(name)(styles) when is_list(styles) do
+        styles
+        |> Enum.map(fn s -> unquote(name)(s) end)
+        |> Enum.reverse
+        |> Enum.reduce(&AttrBuilder.join/2)
       end
+
+      def unquote(name)(style) do
+        AttrBuilder.new(unquote(name), seed: unquote(seed), styles: [style], attr: unquote(attr))
+      end
+
+      def unquote(name)(s1, s2), do:  unquote(name)([s1, s2])
+      def unquote(name)(s1, s2, s3), do:  unquote(name)([s1, s2, s3])
+      def unquote(name)(s1, s2, s3, s4, s5), do:  unquote(name)([s1, s2, s3, s4])
+      def unquote(name)(s1, s2, s3, s4, s5, s6), do:  unquote(name)([s1, s2, s3, s4, s5])
+      def unquote(name)(s1, s2, s3, s4, s5, s6, s7), do:  unquote(name)([s1, s2, s3, s4, s5, s6])
+      def unquote(name)(s1, s2, s3, s4, s5, s6, s7, s8), do:  unquote(name)([s1, s2, s3, s4, s5, s6, s7, s8])
+      def unquote(name)(s1, s2, s3, s4, s5, s6, s7, s8, s9), do:  unquote(name)([s1, s2, s3, s4, s5, s6, s7, s8, s9])
+      def unquote(name)(s1, s2, s3, s4, s5, s6, s7, s8, s9, s10), do:  unquote(name)([s1, s2, s3, s4, s5, s6, s7, s8, s9, s10])
     end
   end
 

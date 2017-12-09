@@ -1,6 +1,6 @@
 defmodule UIKit.GridTest do
   use ExUnit.Case
-  use Taggart.HTML
+  use Taggart.HTML, except: [table: 2]
   use UIKit
 
   test "renders default grid" do

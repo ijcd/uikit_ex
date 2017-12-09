@@ -90,8 +90,7 @@ defmodule UIKit.Element.Behavior do
       :target
     ]
 
-  defstyle :transition,
-    styles: [
+  @transition_styles styles: [
       :fade,
       :scale_up,
       :scale_down,
@@ -108,4 +107,9 @@ defmodule UIKit.Element.Behavior do
       :slide_left_medium,
       :slide_right_medium,
     ]
+    defcomponent :transition,
+      seed: false,
+      styles: @transition_styles
+    defstyle :transition, styles: @transition_styles
+
 end

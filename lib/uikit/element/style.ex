@@ -20,54 +20,56 @@ defmodule UIKit.Element.Style do
   defstyle :light
   defstyle :dark
 
-  defstyle :margin,
-    styles: [
-      # normal
-      :"",
-      :top,
-      :bottom,
-      :left,
-      :right,
-      # small
-      :small,
-      :small_top,
-      :small_bottom,
-      :small_left,
-      :small_right,
-      # medium
-      :medium,
-      :medium_top,
-      :medium_bottom,
-      :medium_left,
-      :medium_right,
-      # large
-      :large,
-      :large_top,
-      :large_bottom,
-      :large_left,
-      :large_right,
-      # xlarge
-      :xlarge,
-      :xlarge_top,
-      :xlarge_bottom,
-      :xlarge_left,
-      :xlarge_right,
-      # remove
-      :remove,
-      :remove_top,
-      :remove_bottom,
-      :remove_left,
-      :remove_right,
-      :remove_vertical,
-      :remove_adjacent,
-      # auto
-      :auto,
-      :auto_top,
-      :auto_bottom,
-      :auto_left,
-      :auto_right,
-      :auto_vertical,
-    ]
+  @margin_styles styles: [
+    # normal
+    :"",
+    :top,
+    :bottom,
+    :left,
+    :right,
+    # small
+    :small,
+    :small_top,
+    :small_bottom,
+    :small_left,
+    :small_right,
+    # medium
+    :medium,
+    :medium_top,
+    :medium_bottom,
+    :medium_left,
+    :medium_right,
+    # large
+    :large,
+    :large_top,
+    :large_bottom,
+    :large_left,
+    :large_right,
+    # xlarge
+    :xlarge,
+    :xlarge_top,
+    :xlarge_bottom,
+    :xlarge_left,
+    :xlarge_right,
+    # remove
+    :remove,
+    :remove_top,
+    :remove_bottom,
+    :remove_left,
+    :remove_right,
+    :remove_vertical,
+    :remove_adjacent,
+    # auto
+    :auto,
+    :auto_top,
+    :auto_bottom,
+    :auto_left,
+    :auto_right,
+    :auto_vertical,
+  ]
+
+  defcomponent :margin, styles: @margin_styles
+  defstyle :margin, styles: @margin_styles
   defboolean :margin,
     component_options: [
       :margin,
@@ -105,6 +107,11 @@ defmodule UIKit.Element.Style do
       :inline_block
     ]
 
+  defcomponent :inline,
+    seed: false,
+    styles: [
+      :clip
+    ]
   defstyle :inline,
     styles: [
       :clip
