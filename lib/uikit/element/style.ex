@@ -68,8 +68,11 @@ defmodule UIKit.Element.Style do
     :auto_vertical,
   ]
 
-  defcomponent :margin, styles: @margin_styles
-  defstyle :margin, styles: @margin_styles
+  defcomponent :margin,
+    seed: false,
+    styles: @margin_styles
+  defstyle :margin,
+    styles: @margin_styles
   defboolean :margin,
     component_options: [
       :margin,
