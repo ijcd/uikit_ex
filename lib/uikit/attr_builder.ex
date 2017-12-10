@@ -55,13 +55,20 @@ defmodule UIKit.AttrBuilder do
     [class: classes] ++ attrs
   end
 
-  defp as_class(nil, {nil, style}), do: raise UIKit.NoTagContext
+  defp as_class(c1, c2, prefix \\ "uk")
 
-  defp as_class(c1, {c2, style}) do
+  defp as_class(nil, {nil, _}, _), do: raise UIKit.NoTagContext
+
+  defp as_class(c1, {c2, style}, prefix) do
     component = c2 || c1
-    ["uk", dasherize(component), dasherize(style)]
+    [prefix, dasherize(component), dasherize(style)]
     |> Enum.reject(&is_nil/1)
     |> Enum.join("-")
+  end
+
+  defp as_attr({"", [{attr, val}]}) do
+    sym = as_class("", {attr, nil}, nil) |> String.to_atom()
+    {sym, val}
   end
 
   defp as_attr({attr, val}) do

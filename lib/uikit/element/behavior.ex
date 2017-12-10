@@ -31,8 +31,7 @@ defmodule UIKit.Element.Behavior do
       :reverse
     ]
 
-  defcomponent :parallax,
-    component_options: [
+  @parallax_options [
       # normal
       :easing,
       :target,
@@ -56,6 +55,8 @@ defmodule UIKit.Element.Behavior do
       :saturate,
       :sepia
     ]
+  defcomponent :parallax, options: @parallax_options
+  defstyle :parallax, options: @parallax_options
 
   defboolean :scroll,
     component_options: [

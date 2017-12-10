@@ -85,7 +85,7 @@ defmodule UIKit.AttrBuilderTest do
 
     test "warns when trying to build without a tag context" do
       assert_raise UIKit.NoTagContext, fn ->
-        AttrBuilder.join(:bar, :baz) |> AttrBuilder.build() |> IO.inspect
+        AttrBuilder.join(:bar, :baz) |> AttrBuilder.build()
       end
     end
   end

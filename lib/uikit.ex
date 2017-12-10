@@ -20,8 +20,10 @@ defmodule UIKit do
       import UIKit.Element.Layout
       import UIKit.Element.Navigation
       import UIKit.Element.Style
+      
       defdelegate a | b, to: UIKit
-      defdelegate uk_classes(style), to: UIKit
+      defdelegate uk_class(style), to: UIKit
+      defdelegate attr(attrs), to: UIKit
     end
   end
 
@@ -42,14 +44,30 @@ defmodule UIKit do
 
   ## Examples
 
-      iex> uk_classes(width(:auto) | position(:bottom))
+      iex> uk_class(width(:auto) | position(:bottom))
       [class: "uk-width-auto uk-position-bottom"]
 
   """
-  def uk_classes(attr) do
+  def uk_class(), do: ""
+  def uk_class(attr) do
     attr
     |> AttrBuilder.build()
     |> Keyword.get(:class)
+  end
+
+  @doc """
+  Useful for embedding UIKit styles into other libraries, such as Phoenix.HTML
+  or Taggart.
+
+  ## Examples
+
+      iex> uk_class(width(:auto) | position(:bottom))
+      [class: "uk-width-auto uk-position-bottom"]
+
+  """
+  def attr(), do: nil
+  def attr(attrs) when is_list(attrs) do
+    AttrBuilder.new("", attr: attrs)
   end
 
   @doc """
@@ -105,19 +123,30 @@ defmodule UIKit do
       seed: Keyword.get(opts, :seed, false),
       attr: Keyword.get(opts, :attr, false),
     ] do
-      def unquote(name)(styles \\ nil)
+
+      def unquote(name)(styles \\ [])
 
       def unquote(name)(styles) when is_list(styles) do
-        styles
-        |> Enum.map(fn s -> unquote(name)(s) end)
-        |> Enum.reverse
-        |> Enum.reduce(&AttrBuilder.join/2)
+        name = unquote(name)
+        seed = unquote(seed)
+        attr = unquote(attr)
+
+        case styles do
+          [{k, v} | _] ->
+            attr =
+              styles
+              |> Enum.map(fn {k, v} -> "#{k}: #{v}" end)
+              |> Enum.join("; ")
+
+            AttrBuilder.new(name, seed: seed, styles: [], attr: attr)
+          [] -> 
+            AttrBuilder.new(name, seed: true, styles: styles, attr: attr)
+          _ ->
+            AttrBuilder.new(name, seed: seed, styles: styles, attr: attr)
+        end
       end
 
-      def unquote(name)(style) do
-        AttrBuilder.new(unquote(name), seed: unquote(seed), styles: [style], attr: unquote(attr))
-      end
-
+      def unquote(name)(s1), do:  unquote(name)([s1])
       def unquote(name)(s1, s2), do:  unquote(name)([s1, s2])
       def unquote(name)(s1, s2, s3), do:  unquote(name)([s1, s2, s3])
       def unquote(name)(s1, s2, s3, s4, s5), do:  unquote(name)([s1, s2, s3, s4])
