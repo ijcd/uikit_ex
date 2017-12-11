@@ -35,11 +35,41 @@ defmodule UIKit.UIKitTest do
     end
 
     test "returns an attr" do
-      assert %UIKit.AttrBuilder{attrs: [{"", [style: "background-image: url('/images/dark.jpg');"]}], component: "", styles: []} == attr(style: "background-image: url('/images/dark.jpg');")
+      assert %UIKit.AttrBuilder{attrs: [{"", {:style, "background-image: url('/images/dark.jpg');"}}], component: "", styles: []} == attr(style: "background-image: url('/images/dark.jpg');")
+    end
+
+    test "returns multiple attrs" do
+      assert %UIKit.AttrBuilder{attrs: [{"", {:style, "background-image: url('/images/dark.jpg');"}}, {"", {:alt_longer, "a dark background"}}], component: "", styles: []} == attr(style: "background-image: url('/images/dark.jpg');", alt_longer: "a dark background")
     end
 
     test "renders in a tag properly" do
       assert ~s|<div class="uk-foo" style="background-image: url(&#39;/images/dark.jpg&#39;);"></div>| == s2s(uk_foo(attr(style: "background-image: url('/images/dark.jpg');"), do: nil))
+    end
+  end
+
+  describe "uk" do
+    test "renders a void tag" do
+      assert ~s|<img class="uk-animation-kenburns">| == s2s(uk(:img, Behavior.animation(:kenburns)))
+    end
+
+    test "renders a void tag with multiple styles" do
+      assert ~s|<img class="uk-animation-kenburns uk-position-center">| == s2s(uk(:img, Behavior.animation(:kenburns) | Layout.position(:center)))
+    end
+
+    test "renders an empty content tag (void aware)" do
+      assert ~s|<div class="uk-animation-kenburns"></div>| == s2s(uk(:div, Behavior.animation(:kenburns)))
+    end
+
+    test "renders a content tag" do
+      assert ~s|<div class="uk-animation-kenburns">content</div>| == s2s(uk(:div, Behavior.animation(:kenburns), do: "content"))
+    end
+
+    test "renders a conent tag with multiple styles" do
+      assert ~s|<div class="uk-animation-kenburns uk-position-center">content</div>| == s2s(uk(:div, Behavior.animation(:kenburns) | Layout.position(:center), do: "content"))
+    end
+
+    test "renders a conent tag with multiple styles and attrs" do
+      assert ~s|<div alt="" class="uk-animation-kenburns uk-position-center" src="/images/dark.jpg">content</div>| == s2s(uk(:div, Behavior.animation(:kenburns) | Layout.position(:center) | (attr(src: "/images/dark.jpg", alt: "")), do: "content"))
     end
   end
 

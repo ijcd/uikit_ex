@@ -1,6 +1,5 @@
 defmodule UIKit.Element.Navigation do
   import UIKit
-  alias UIKit.AttrBuilder
 
   # <li class="uk-disabled"><a href=""></a></li>
   defcomponent :breadcrumb,
@@ -93,7 +92,8 @@ defmodule UIKit.Element.Navigation do
   defstyle :navbar_dropdown_width_4
   defstyle :navbar_dropdown_width_5
 
-  @padding_styles [
+  def padding_styles do
+    [
       :small,
       :large,
       :remove,
@@ -104,9 +104,10 @@ defmodule UIKit.Element.Navigation do
       :remove_vertical,
       :remove_horizontal
     ]
+  end
 
-  defcomponent :padding
-  defstyle :padding
+  defcomponent :padding, styles: __MODULE__.padding_styles
+  defstyle :padding, styles: __MODULE__.padding_styles
 
   defcomponent :pagination, tag: :ul
 

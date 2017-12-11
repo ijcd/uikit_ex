@@ -1,6 +1,5 @@
 defmodule UIKit.Element.Behavior do
   import UIKit
-  alias UIKit.AttrBuilder
 
   # TODO: notifications are all JS -- how to handle this? Event components?
   # IDEA: event components combined with Presto to forward notifications?
@@ -31,7 +30,8 @@ defmodule UIKit.Element.Behavior do
       :reverse
     ]
 
-  @parallax_options [
+  def parallax_options do
+    [
       # normal
       :easing,
       :target,
@@ -55,8 +55,10 @@ defmodule UIKit.Element.Behavior do
       :saturate,
       :sepia
     ]
-  defcomponent :parallax, options: @parallax_options
-  defstyle :parallax, options: @parallax_options
+  end
+
+  defcomponent :parallax, options: __MODULE__.parallax_options
+  defstyle :parallax, options: __MODULE__.parallax_options
 
   defboolean :scroll,
     component_options: [
@@ -91,7 +93,8 @@ defmodule UIKit.Element.Behavior do
       :target
     ]
 
-  @transition_styles styles: [
+  def transition_styles do
+    [
       :fade,
       :scale_up,
       :scale_down,
@@ -108,9 +111,11 @@ defmodule UIKit.Element.Behavior do
       :slide_left_medium,
       :slide_right_medium,
     ]
-    defcomponent :transition,
-      seed: false,
-      styles: @transition_styles
-    defstyle :transition, styles: @transition_styles
+  end
+
+  defcomponent :transition,
+    seed: false,
+    styles: __MODULE__.transition_styles
+  defstyle :transition, styles: __MODULE__.transition_styles
 
 end

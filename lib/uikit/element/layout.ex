@@ -1,16 +1,17 @@
 defmodule UIKit.Element.Layout do
   import UIKit
-  alias UIKit.AttrBuilder
 
   # could be style?
-  @column_styles [
-    (for col <- 1..6, bp <- [:s, :m, :l, :xl], do: "uk-column-1-#{col}@{bp}"),
-    :divider,
-    :span
-  ] |> List.flatten
+  def column_styles do
+    [
+      (for col <- 1..6, bp <- [:s, :m, :l, :xl], do: "uk-column-1-#{col}@#{bp}"),
+      :divider,
+      :span
+    ] |> List.flatten
+  end
 
-  defcomponent :column, styles: @column_styles
-  defstyle :column, styles: @column_styles
+  defcomponent :column, styles: __MODULE__.column_styles
+  defstyle :column, styles: __MODULE__.column_styles
 
   defcomponent :container,
     styles: [
@@ -34,7 +35,8 @@ defmodule UIKit.Element.Layout do
     ]
 
   # TODO: bp is optional, and we probably won't pass it as a built string
-  @flex_styles [
+  def flex_styles do
+    [
       # kind
       :inline,
       # styles
@@ -67,24 +69,27 @@ defmodule UIKit.Element.Layout do
       :auto,
       :"1"
     ] |> List.flatten
+  end
 
-  defcomponent :flex, styles: @flex_styles
+  defcomponent :flex, styles: __MODULE__.flex_styles
   defstyle :flex,
     seed: true,
-    styles: @flex_styles
+    styles: __MODULE__.flex_styles
 
-  @grid_styles [
-    # style
-    :small,
-    :medium,
-    :large,
-    :collapse,
-    # divider
-    :divider,
-    # height
-    :match,
-    :item_match
-  ]
+  def grid_styles do
+    [
+      # style
+      :small,
+      :medium,
+      :large,
+      :collapse,
+      # divider
+      :divider,
+      # height
+      :match,
+      :item_match
+    ]
+  end
 
   # <div class="uk-flex-center" uk-grid>
   #     <div></div>
@@ -93,14 +98,14 @@ defmodule UIKit.Element.Layout do
   defcomponent :grid,
     seed: false,
     attr: true,
-    styles: @grid_styles,
+    styles: __MODULE__.grid_styles,
     component_options: [
       :margin,
       :first_column
     ]
   defstyle :grid,
-    styles: @grid_styles,
-    attr: true
+    attr: true,
+    styles: __MODULE__.grid_styles
 
   defcomponent :grid_parallax,
     component_options: [
@@ -108,7 +113,8 @@ defmodule UIKit.Element.Layout do
       :translate
     ]
 
-  @position_styles styles: [
+  def position_styles do  
+    [
       # position
       :top,
       :left,
@@ -135,10 +141,13 @@ defmodule UIKit.Element.Layout do
       :fixed,
       :z_index
     ]
+  end
+
   defcomponent :position,
     seed: false,
-    styles: @position_styles
-  defstyle :position, styles: @position_styles
+    styles: __MODULE__.position_styles
+  defstyle :position,
+    styles: __MODULE__.position_styles
 
   # - uk-preserve-color
   # - uk-padding-remove-vertical

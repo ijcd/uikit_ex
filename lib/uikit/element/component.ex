@@ -1,6 +1,5 @@
 defmodule UIKit.Element.Component do
   import UIKit
-  alias UIKit.AttrBuilder
 
   # <li class="uk-open"></li>
   defcomponent :accordion,

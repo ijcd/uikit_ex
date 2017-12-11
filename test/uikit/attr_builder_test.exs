@@ -1,6 +1,7 @@
 defmodule UIKit.AttrBuilderTest do
   use ExUnit.Case
   alias UIKit.AttrBuilder
+  alias UIKit.Element.{Behavior,Layout}
 
   @empty AttrBuilder.new(:foo)
   @seeded AttrBuilder.new(:foo, seed: true)
@@ -88,6 +89,22 @@ defmodule UIKit.AttrBuilderTest do
         AttrBuilder.join(:bar, :baz) |> AttrBuilder.build()
       end
     end
+
+    test "builds a standard attribute" do
+      assert [class: "uk-animation-kenburns"] == Behavior.animation(:kenburns) |> AttrBuilder.build()
+    end
+
+    test "builds a joined attribute" do
+      assert [class: "uk-animation-kenburns uk-position-center"] == (AttrBuilder.join(Behavior.animation(:kenburns), Layout.position(:center))) |> AttrBuilder.build()
+    end
+
+    test "builds an attr attribute" do
+      assert [class: nil, style: "background-image: url('/images/dark.jpg');"] == UIKit.attr(style: "background-image: url('/images/dark.jpg');") |> AttrBuilder.build()
+    end
+
+    test "builds a joined attr attribute" do
+      assert [class: "uk-animation-kenburns", style: "background-image: url('/images/dark.jpg');"] == (AttrBuilder.join(Behavior.animation(:kenburns), UIKit.attr(style: "background-image: url('/images/dark.jpg');"))) |> AttrBuilder.build()
+    end
   end
 
   describe "join" do
@@ -134,15 +151,5 @@ defmodule UIKit.AttrBuilderTest do
     test "joins symbols into a named component" do
       assert %AttrBuilder{attrs: [], component: :foo, styles: [foo: nil, nil: :bar, nil: :baz]} == AttrBuilder.join(@seeded, AttrBuilder.join(:bar, :baz))
     end
-
-
-    # test "warns joining to a naked symbol (tag context missing)" do
-    #   assert_raise UIKit.NoContextForStyleJoin, fn ->
-    #     AttrBuilder.join(
-    #       :bang,
-    #       AttrBuilder.new(:foo, styles: [:far, :faz], attr: true)
-    #     )
-    #   end
-    # end
   end
 end

@@ -67,7 +67,39 @@ defmodule UIKit do
   """
   def attr(), do: nil
   def attr(attrs) when is_list(attrs) do
-    AttrBuilder.new("", attr: attrs)
+    attrs
+    |> Enum.map(fn (a) -> AttrBuilder.new("", attr: a) end)
+    |> Enum.reduce(fn(a, acc) -> AttrBuilder.join(acc, a) end)
+  end
+
+  @doc """
+  Renders a tag without the need for defstyle or defcomponent
+  or Taggart.
+
+  ## Examples
+
+      iex> uk(:img, animation(:kenburns) | transform_origin(:center_right) | attr(src: "/images/dark.jpg", alt: "")))
+      TODO
+
+  """
+  defmacro uk(tag, style) do
+    quote location: :keep do
+      tag = unquote(tag)
+      case tag do
+        t when t in void_tags() ->
+          Taggart.HTML.unquote(tag)(AttrBuilder.build(unquote(style)))
+        _ -> 
+          Taggart.HTML.unquote(tag)(nil, AttrBuilder.build(unquote(style)), do: "")
+      end
+    end
+  end
+
+  defmacro uk(tag, style, do: block) do
+    quote location: :keep do
+      Taggart.HTML.unquote(tag)(nil, AttrBuilder.build(unquote(style))) do
+        unquote(block)
+      end
+    end
   end
 
   @doc """
@@ -87,6 +119,7 @@ defmodule UIKit do
     ] do
       require Taggart.HTML
 
+      # TODO: check for allowed styles and component_options (maybe only in dev?)
       defmacro unquote(:"uk_#{name}")(style \\ nil, opts \\ [], do: block) do
         name = unquote(name)
         tag = Keyword.get(opts, :tag, unquote(tag))
@@ -126,6 +159,7 @@ defmodule UIKit do
 
       def unquote(name)(styles \\ [])
 
+      # TODO: check for allowed styles and component_options (maybe only in dev?)
       def unquote(name)(styles) when is_list(styles) do
         name = unquote(name)
         seed = unquote(seed)
@@ -135,7 +169,7 @@ defmodule UIKit do
           [{k, v} | _] ->
             attr =
               styles
-              |> Enum.map(fn {k, v} -> "#{k}: #{v}" end)
+              |> Enum.map(fn {k, v} -> "#{AttrBuilder.dasherize(k)}: #{v}" end)
               |> Enum.join("; ")
 
             AttrBuilder.new(name, seed: seed, styles: [], attr: attr)
@@ -183,6 +217,31 @@ defmodule UIKit do
   defmacro defdata(_name, _opts \\ []) do
     quote location: :keep, bind_quoted: [
     ] do
+    end
+  end
+
+  @doc false
+  defmacro void_tags do
+    quote do
+      [
+        :area,
+        :base,
+        :br,
+        :col,
+        :command,
+        :embed,
+        :hr,
+        :img,
+        :input,
+        :keygen,
+        :link,
+        :menuitem,
+        :meta,
+        :param,
+        :source,
+        :track,
+        :wbr,
+      ]
     end
   end
 end

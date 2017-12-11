@@ -66,7 +66,7 @@ defmodule UIKit.AttrBuilder do
     |> Enum.join("-")
   end
 
-  defp as_attr({"", [{attr, val}]}) do
+  defp as_attr({"", {attr, val}}) do
     sym = as_class("", {attr, nil}, nil) |> String.to_atom()
     {sym, val}
   end
@@ -79,6 +79,6 @@ defmodule UIKit.AttrBuilder do
   defp join_classes([]), do: nil
   defp join_classes(c), do: Enum.join(c, " ")
 
-  defp dasherize(nil), do: nil
-  defp dasherize(s), do: String.replace("#{s}", "_", "-")
+  def dasherize(nil), do: nil
+  def dasherize(s), do: String.replace("#{s}", "_", "-")
 end
