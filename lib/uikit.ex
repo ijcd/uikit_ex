@@ -20,10 +20,12 @@ defmodule UIKit do
       import UIKit.Element.Layout
       import UIKit.Element.Navigation
       import UIKit.Element.Style
+      import UIKit, only: [uk: 2, uk: 3]
       
       defdelegate a | b, to: UIKit
       defdelegate uk_class(style), to: UIKit
       defdelegate attr(attrs), to: UIKit
+      defdelegate class(c), to: UIKit
     end
   end
 
@@ -56,13 +58,24 @@ defmodule UIKit do
   end
 
   @doc """
-  Useful for embedding UIKit styles into other libraries, such as Phoenix.HTML
+  Used to insert a custom class.
   or Taggart.
 
   ## Examples
 
-      iex> uk_class(width(:auto) | position(:bottom))
-      [class: "uk-width-auto uk-position-bottom"]
+      class("my-special-class") | position(:bottom))
+
+  """
+  def class(attr) do
+    AttrBuilder.new("", styles: [attr])
+  end
+
+  @doc """
+  Allows the insertion of custom attributes.
+
+  ## Examples
+
+      attr(id: "the-id", href="#")
 
   """
   def attr(), do: nil
@@ -78,15 +91,14 @@ defmodule UIKit do
 
   ## Examples
 
-      iex> uk(:img, animation(:kenburns) | transform_origin(:center_right) | attr(src: "/images/dark.jpg", alt: "")))
-      TODO
+      uk(:img, animation(:kenburns) | transform_origin(:center_right) | attr(src: "/images/dark.jpg", alt: "")))
 
   """
   defmacro uk(tag, style) do
-    quote location: :keep do
+    quote location: :keep, generated: true do
       tag = unquote(tag)
       case tag do
-        t when t in void_tags() ->
+        t when t in [:area, :base, :br, :col, :command, :embed, :hr, :img, :input, :keygen, :link, :menuitem, :meta, :param, :source, :track, :wbr] ->
           Taggart.HTML.unquote(tag)(AttrBuilder.build(unquote(style)))
         _ -> 
           Taggart.HTML.unquote(tag)(nil, AttrBuilder.build(unquote(style)), do: "")
@@ -217,31 +229,6 @@ defmodule UIKit do
   defmacro defdata(_name, _opts \\ []) do
     quote location: :keep, bind_quoted: [
     ] do
-    end
-  end
-
-  @doc false
-  defmacro void_tags do
-    quote do
-      [
-        :area,
-        :base,
-        :br,
-        :col,
-        :command,
-        :embed,
-        :hr,
-        :img,
-        :input,
-        :keygen,
-        :link,
-        :menuitem,
-        :meta,
-        :param,
-        :source,
-        :track,
-        :wbr,
-      ]
     end
   end
 end

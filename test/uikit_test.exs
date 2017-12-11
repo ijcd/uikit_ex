@@ -29,6 +29,20 @@ defmodule UIKit.UIKitTest do
     end
   end
 
+  describe "class" do
+    test "builds a basic class" do
+      assert %UIKit.AttrBuilder{attrs: [], component: "", styles: [{"", "custom-class"}]} == class("custom-class")
+    end
+
+    test "renders a basic class" do
+      assert ~s|<img class="custom-class uk-position-center">| == s2s(uk(:img, class("custom-class") | Layout.position(:center)))
+    end
+
+    test "renders multiple classes" do
+      assert ~s|<img class="custom-class custom2">| == s2s(uk(:img, class("custom-class") | class("custom2")))
+    end
+  end  
+
   describe "attr" do
     test "returns an empty attr" do
       assert nil == attr()

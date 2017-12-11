@@ -59,6 +59,10 @@ defmodule UIKit.AttrBuilder do
 
   defp as_class(nil, {nil, _}, _), do: raise UIKit.NoTagContext
 
+  defp as_class("", {"", class}, _) do
+    dasherize(class)
+  end
+
   defp as_class(c1, {c2, style}, prefix) do
     component = c2 || c1
     [prefix, dasherize(component), dasherize(style)]
