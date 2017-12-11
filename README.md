@@ -16,6 +16,8 @@ Updates:
 TODO:
 * https://getuikit.com/v2/docs/customizer.html
 * PR to aweseome-uikit
+* Icons
+* Buttons
 
 UIkit and reactive JavaScript frameworks
 

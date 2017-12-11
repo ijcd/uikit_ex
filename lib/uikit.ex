@@ -20,12 +20,7 @@ defmodule UIKit do
       import UIKit.Element.Layout
       import UIKit.Element.Navigation
       import UIKit.Element.Style
-      import UIKit, only: [uk: 2, uk: 3]
-      
-      defdelegate a | b, to: UIKit
-      defdelegate uk_class(style), to: UIKit
-      defdelegate attr(attrs), to: UIKit
-      defdelegate class(c), to: UIKit
+      import UIKit, only: [uk: 2, uk: 3, "|": 2, uk_class: 1, attr: 1, class: 1]
     end
   end
 
@@ -183,10 +178,11 @@ defmodule UIKit do
               styles
               |> Enum.map(fn {k, v} -> "#{AttrBuilder.dasherize(k)}: #{v}" end)
               |> Enum.join("; ")
-
             AttrBuilder.new(name, seed: seed, styles: [], attr: attr)
+
           [] -> 
             AttrBuilder.new(name, seed: true, styles: styles, attr: attr)
+
           _ ->
             AttrBuilder.new(name, seed: seed, styles: styles, attr: attr)
         end

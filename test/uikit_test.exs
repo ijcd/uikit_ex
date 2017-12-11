@@ -41,6 +41,12 @@ defmodule UIKit.UIKitTest do
     test "renders multiple classes" do
       assert ~s|<img class="custom-class custom2">| == s2s(uk(:img, class("custom-class") | class("custom2")))
     end
+
+    # TODO
+    # test "regression #1" do
+    #   require UIKit.Element.Component
+    #   assert ~s|<div class=\"uk-card uk-card-default uk-card-body test-fixed\"></div>| == s2s(UIKit.Element.Component.uk_card(:default | :body | class("test-fixed"), do: nil))
+    # end
   end  
 
   describe "attr" do

@@ -38,7 +38,7 @@ defmodule UIKit.AttrBuilder do
     %{a | styles: a.styles ++ b.styles, attrs: a.attrs ++ b.attrs}
   end
 
-  def join(a, b) when is_atom(a) do
+  def join(a, b) when is_atom(a) or is_binary(a) do
     join(__MODULE__.new(nil, styles: [a]), b)
   end
 

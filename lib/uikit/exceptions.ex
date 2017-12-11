@@ -4,10 +4,12 @@ defmodule UIKit.NoTagContext do
   If you use the symbol shorthand, you must first join to a tag with a component:
 
   GOOD:
-    AttrBuilder.build(width(:auto) | :foo)
+    width(:auto) | :foo     # width() provides context
+    uk_foo(:foo | :bar)     # uk_foo() provides context
 
   BAD:
-    AttrBuilder.build(:foo | :bar)
+    :foo | :bar             # No context. Try class(:foo) | class(:bar)
+    uk(:div, :foo)          # No context. Try uk(:div, class(:foo))
 
   """
 
