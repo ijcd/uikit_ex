@@ -27,11 +27,12 @@ defmodule UIKit.Attributes do
 
   defmodule ComponentClass do
     @moduledoc false
-    defstruct [:component, :seed, :styles]
+    defstruct [:component, :seed, :attr, :styles]
 
     def new(component, styles, opts \\ []) do
-      seed = Keyword.get(opts, :seed, true)
-      %__MODULE__{component: component, seed: seed, styles: styles}
+      seed = Keyword.get(opts, :seed, false)
+      attr = Keyword.get(opts, :attr, false)
+      %__MODULE__{component: component, seed: seed, attr: attr, styles: styles}
     end
   end
 
@@ -51,7 +52,7 @@ defmodule UIKit.Attributes do
     attr = case context.attr do
       true -> [{classify(["uk", context.component]), context.attr}]
       _ -> []
-    end    
+    end
 
     # seed indicates that the root class should always be indlucde <div class="uk-flex uk-flex-inline:>
     seed = case context.seed do
@@ -74,21 +75,25 @@ defmodule UIKit.Attributes do
 
   @doc false
   def make_attr(_context, %ComponentClass{} = cc) do
-    seed = if cc.seed || cc.styles == [] do
-      [{:class, classify(["uk", cc.component])}]
-    else
-      []
+    seed = cond do
+      cc.seed || cc.styles == [] -> [{:class, classify(["uk", cc.component])}]
+      true -> []
+    end
+
+    attr = cond do
+      cc.attr -> [{classify(["uk", cc.component]), cc.attr}]
+      true -> []
     end
 
     cond do
       [] == cc.styles ->
-        seed
+        attr ++ seed
       Keyword.keyword?(cc.styles) ->
         name = classify(["uk", cc.component])
         value = Enum.map(cc.styles, fn {k, v} -> "#{dasherize(k)}: #{v}" end) |> Enum.join("; ")
-        [{name, value}]
+        attr ++ [{name, value}]
       true -> 
-        (seed ++ Enum.map(cc.styles, &make_attr(cc, &1)))
+        attr ++ seed ++ Enum.map(cc.styles, &make_attr(cc, &1))
     end
   end
 

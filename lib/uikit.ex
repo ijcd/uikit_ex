@@ -85,7 +85,7 @@ defmodule UIKit do
   for n <- 1..10, do: make_variadic_uk_block(:uk, n)
 
   defmacro uk(tag, styles) when is_list(styles) do
-    quote location: :keep do
+    quote location: :keep, generated: true do
       tag = unquote(tag)
       styles = unquote(styles)
 
@@ -167,6 +167,7 @@ defmodule UIKit do
     quote location: :keep, bind_quoted: [
       name: name,
       seed: Keyword.get(opts, :seed, false),
+      attr: Keyword.get(opts, :attr, false),
     ] do
 
       defmacro unquote(name)(styles \\ [])
@@ -175,12 +176,15 @@ defmodule UIKit do
       defmacro unquote(name)(styles) when is_list(styles) do
         name = unquote(name)
         seed = unquote(seed)
+        attr = unquote(attr)
 
         quote location: :keep do
           name = unquote(name)
           styles = unquote(styles)
           seed = unquote(seed)
-          Attributes.ComponentClass.new(name, styles, seed: seed)
+          attr = unquote(attr)
+
+          Attributes.ComponentClass.new(name, styles, seed: seed, attr: attr)
         end
       end
 

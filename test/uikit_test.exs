@@ -1,7 +1,7 @@
 defmodule UIKit.UIKitTest do
   use ExUnit.Case
   import UIKit
-  import UIKit.Element.{Behavior,Component,Layout,Navigation,Style}
+  import UIKit.Element.{Behavior,Component,Layout,Style}
 
   defp s2s(ss), do: Phoenix.HTML.safe_to_string(ss)
 
@@ -132,6 +132,10 @@ defmodule UIKit.UIKitTest do
     test "handles a keyword list of component options" do
       assert ~s|<div class="uk-foo" uk-bar="bgy: -400; sepia: 100"></div>| == s2s(uk_foo(bar(bgy: -400, sepia: 100), do: nil))
     end    
+
+    test "creates attrs for attr styles (regression)" do
+      assert ~s|<header uk-grid class="uk-comment-header uk-grid-medium uk-flex uk-flex-middle"></header>| == s2s(uk_comment_header(grid(:medium), flex(:middle), do: nil))
+    end
   end
 
   # describe "defboolean" do
