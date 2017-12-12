@@ -102,6 +102,10 @@ defmodule UIKit.UIKitTest do
     test "works with string classes (regression)" do
       assert ~s|<div uk-grid class="uk-grid-match uk-child-width-1-3@m"></div>| == s2s(uk_grid(:match, child_width("1-3@m"), do: ""))
     end
+
+    test "works with recursive versions of the same tag (regression)" do
+      assert ~s|<div class="uk-section"><div class="uk-section uk-section-default"></div></div>| == s2s(uk_section(do: uk_section(:default, do: "")))
+    end
   end
 
   describe "defstyle" do

@@ -72,12 +72,11 @@ defmodule UIKit do
       tag = unquote(tag)
       styles = unquote(styles)
 
-      attributes = Attributes.build(
-        Attributes.TagContext.new(nil, seed: false),
-        styles
-      )     
-
-      Taggart.HTML.unquote(tag)(nil, attributes, do: unquote(block))
+      Taggart.HTML.unquote(tag)(
+        nil,
+        Attributes.build(Attributes.TagContext.new(nil, seed: false), styles),
+        do: unquote(block)
+      )
     end
   end
 
@@ -89,16 +88,17 @@ defmodule UIKit do
       tag = unquote(tag)
       styles = unquote(styles)
 
-      attributes = Attributes.build(
-        Attributes.TagContext.new(nil, seed: false),
-        styles
-      )       
-
       case tag do
         t when t in [:area, :base, :br, :col, :command, :embed, :hr, :img, :input, :keygen, :link, :menuitem, :meta, :param, :source, :track, :wbr] ->
-          Taggart.HTML.unquote(tag)(attributes)
+          Taggart.HTML.unquote(tag)(
+            Attributes.build(Attributes.TagContext.new(nil, seed: false), styles)
+          )
         _ -> 
-          Taggart.HTML.unquote(tag)(nil, attributes, do: "")
+          Taggart.HTML.unquote(tag)(
+            nil, 
+            Attributes.build(Attributes.TagContext.new(nil, seed: false), styles),
+            do: ""
+          )
       end
     end
   end
@@ -139,12 +139,10 @@ defmodule UIKit do
           seed = unquote(seed)
           attr = unquote(attr)
 
-          attributes = Attributes.build(
-            Attributes.TagContext.new(name, seed: seed, attr: attr),
-            unquote(styles)
-          )
-
-          Taggart.HTML.unquote(tag)(nil, attributes) do
+          Taggart.HTML.unquote(tag)(
+            nil,
+            Attributes.build(Attributes.TagContext.new(name, seed: seed, attr: attr), unquote(styles))
+          ) do
             unquote(block)
           end
         end
