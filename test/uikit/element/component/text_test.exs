@@ -17,7 +17,7 @@ defmodule UIKit.TextTest do
   test "renders default text with params" do
     html =
       Phoenix.HTML.safe_to_string(
-        uk_text(:large | :center) do
+        uk_text(:large, :center) do
           "content"
         end
       )

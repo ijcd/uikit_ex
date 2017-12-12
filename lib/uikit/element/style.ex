@@ -1,13 +1,6 @@
 defmodule UIKit.Element.Style do
   import UIKit
 
-  # def padding(sym), do: {:padding, sym}
-  # def position(sym), do: {:position, sym}
-  # def margin(sym), do: {:margin, sym}
-  # def flex(sym), do: {:flex, sym}
-  # def text(sym), do: {:text, sym}
-  def width(kind, cols, over, media), do: {:width, {kind, cols, over, media}}
-
   defstyle :parent
 
   defstyle :active

@@ -28,7 +28,7 @@ defmodule UIKit.HeadingTest do
   test "renders default heading with param and modifiers" do
     html =
       Phoenix.HTML.safe_to_string(
-        uk_heading(:primary | text(:center)) do
+        uk_heading(:primary, text(:center)) do
           "content"
         end
       )

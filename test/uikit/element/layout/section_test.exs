@@ -42,7 +42,7 @@ defmodule UIKit.SectionTest do
   test "renders muted and xsmall section" do
     html =
       Phoenix.HTML.safe_to_string(
-        uk_section(:muted | :xsmall) do
+        uk_section(:muted, :xsmall) do
           h1("heading")
           "content"
         end
@@ -54,7 +54,7 @@ defmodule UIKit.SectionTest do
   test "renders muted and xsmall section with padding" do
     html =
       Phoenix.HTML.safe_to_string(
-        uk_section(:muted | :xsmall | padding(:remove_vertical)) do
+        uk_section(:muted, :xsmall, padding(:remove_vertical)) do
           h1("heading")
           "content"
         end
@@ -66,7 +66,7 @@ defmodule UIKit.SectionTest do
   test "renders muted and xsmall section with padding (preserving order)" do
     html =
       Phoenix.HTML.safe_to_string(
-        uk_section(:muted | padding(:remove_vertical) | :xsmall) do
+        uk_section(:muted, padding(:remove_vertical), :xsmall) do
           h1("heading")
           "content"
         end
