@@ -66,8 +66,8 @@ defmodule UIKit.Element.Behavior do
       :offset
     ]
 
-  defcomponent :scrollspy,
-    component_options: [
+  def scrollspy_options do
+    [
       :cls,
       :hidden,
       :offset_top,
@@ -75,12 +75,13 @@ defmodule UIKit.Element.Behavior do
       :repeat,
       :delay
     ]
+  end
 
-  # TODO: spreadsheet compare seed/boolean (T/F)
-  defcomponent :sticky,
-    seed: false,
-    attr: true,
-    component_options: [
+  defcomponent :scrollspy, component_options: __MODULE__.scrollspy_options
+  defstyle :scrollspy, component_options: __MODULE__.scrollspy_options
+
+  def sticky_options do
+    [
       :top,
       :bottom,
       :offset,
@@ -92,6 +93,15 @@ defmodule UIKit.Element.Behavior do
       :media,
       :target
     ]
+  end
+
+  # TODO: spreadsheet compare seed/boolean (T/F)
+  defcomponent :sticky,
+    seed: :empty,
+    attr: true,
+    component_options: __MODULE__.sticky_options
+  defstyle :sticky,
+    component_options: __MODULE__.sticky_options
 
   def transition_styles do
     [
@@ -114,7 +124,7 @@ defmodule UIKit.Element.Behavior do
   end
 
   defcomponent :transition,
-    seed: false,
+    seed: :empty,
     styles: __MODULE__.transition_styles
   defstyle :transition, styles: __MODULE__.transition_styles
 

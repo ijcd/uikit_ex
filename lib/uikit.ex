@@ -74,7 +74,7 @@ defmodule UIKit do
 
       Taggart.HTML.unquote(tag)(
         nil,
-        Attributes.build(Attributes.TagContext.new(nil, seed: false), styles),
+        Attributes.build(Attributes.TagContext.new(nil, seed: :never), styles),
         do: unquote(block)
       )
     end
@@ -91,12 +91,12 @@ defmodule UIKit do
       case tag do
         t when t in [:area, :base, :br, :col, :command, :embed, :hr, :img, :input, :keygen, :link, :menuitem, :meta, :param, :source, :track, :wbr] ->
           Taggart.HTML.unquote(tag)(
-            Attributes.build(Attributes.TagContext.new(nil, seed: false), styles)
+            Attributes.build(Attributes.TagContext.new(nil, seed: :never), styles)
           )
         _ -> 
           Taggart.HTML.unquote(tag)(
             nil, 
-            Attributes.build(Attributes.TagContext.new(nil, seed: false), styles),
+            Attributes.build(Attributes.TagContext.new(nil, seed: :never), styles),
             do: ""
           )
       end
@@ -118,33 +118,99 @@ defmodule UIKit do
   defmacro defcomponent(name, opts \\ []) do
     quote location: :keep, bind_quoted: [
       name: name,
+      component: Keyword.get(opts, :component, name),
       tag: Keyword.get(opts, :tag, :div),
-      seed: Keyword.get(opts, :seed, true),
+      seed: Keyword.get(opts, :seed, :always),
       attr: Keyword.get(opts, :attr, false),
     ] do
       require Taggart.HTML
 
-      defmacro unquote(:"uk_#{name}")(styles \\ [], block)
+      # /3
+      # uk_name([styles], [opts], [do: block]) -> TERMINAL
+      # uk_name([styles], [do: block]) -> uk_name([styles], [], [do: block]) -> /3
+      # /2
+      # uk_name([styles], [do: block]) -> uk_name([styles], [], [do: block]) -> /3
+      # /1
+      # uk_name([do: block]) -> uk_name([], [], [do: block]) -> /3
+      # uk_name(:atom) -> uk_name([:atom], [], [do: nil]) -> /3
+      # uk_name(content) -> uk_name([], [], [do: content]) -> /3
+      # /3 -> /13
+      # uk_name(p1..p10, [opts], [do: block]) -> uk_name([p1..p10], [opts], [do: block]) -> /3
+
+      #
+      # uk_name/3
+      #
 
       # TODO: check for allowed styles and component_options (maybe only in dev?)
-      defmacro unquote(:"uk_#{name}")(styles, do: block) when is_list(styles) do
+      defmacro unquote(:"uk_#{name}")(styles, opts, do: block) when is_list(opts) and is_list(styles) do
         name = unquote(name)
+        component = unquote(component)
         tag = unquote(tag)
         seed = unquote(seed)
         attr = unquote(attr)
 
         quote location: :keep do
           name = unquote(name)
+          component = unquote(component)
           tag = unquote(tag)
           seed = unquote(seed)
           attr = unquote(attr)
+          opts = unquote(opts)
 
           Taggart.HTML.unquote(tag)(
             nil,
-            Attributes.build(Attributes.TagContext.new(name, seed: seed, attr: attr), unquote(styles))
+            Attributes.build(
+              Attributes.TagContext.new(
+                component,
+                seed: seed,
+                attr: attr,
+                opts: opts
+              ),
+              unquote(styles))
           ) do
             unquote(block)
           end
+        end
+      end
+
+      #
+      # uk_name/2 - forwards results to uk_name/3 with empty options default
+      #
+
+      defmacro unquote(:"uk_#{name}")(styles, do: block) when is_list(styles) do
+        name = :"uk_#{unquote(name)}"
+        quote location: :keep do
+          unquote(name)(unquote(styles), [], do: unquote(block))
+        end
+      end
+
+      #
+      # uk_name/1 - forwards results to uk_name/3 with empty options default, detecting block or content
+      #
+
+      defmacro unquote(:"uk_#{name}")(content \\ "")
+
+      # uk_tag() do "foo" end
+      defmacro unquote(:"uk_#{name}")([do: content]) do        
+        name = :"uk_#{unquote(name)}"
+        quote do
+          unquote(name)([], [], do: unquote(content))
+        end
+      end
+
+      # uk_tag(:divider)
+      defmacro unquote(:"uk_#{name}")(style) when is_atom(style) do
+        name = :"uk_#{unquote(name)}"
+        quote do
+          unquote(name)([unquote(style)], [], do: nil)
+        end
+      end
+
+      # uk_tag("foo")
+      defmacro unquote(:"uk_#{name}")(content) do
+        name = :"uk_#{unquote(name)}"
+        quote do
+          unquote(name)([], [], do: unquote(content))
         end
       end
 
@@ -164,7 +230,7 @@ defmodule UIKit do
   defmacro defstyle(name, opts \\ []) do
     quote location: :keep, bind_quoted: [
       name: name,
-      seed: Keyword.get(opts, :seed, false),
+      seed: Keyword.get(opts, :seed, :empty),
       attr: Keyword.get(opts, :attr, false),
     ] do
 

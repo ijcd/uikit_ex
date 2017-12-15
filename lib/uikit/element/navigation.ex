@@ -4,32 +4,31 @@ defmodule UIKit.Element.Navigation do
   # <li class="uk-disabled"><a href=""></a></li>
   defcomponent :breadcrumb,
     tag: :ul
-  defcomponent :breadcrumb_item, tag: :li
+  defcomponent :breadcrumb_item,
+    tag: :li,
+    seed: :never
 
-  # <li class="uk-active"><a href=""></a></li>
-  # <div class="uk-position-relative uk-light">
-  #     <!-- The element which is wrapped goes here -->
-  #     <div class="uk-position-bottom-center uk-position-small">
-  #         <ul class="uk-dotnav">...</ul>
-  #     </div>
-  # </div>
-  # <div class="uk-position-center-right uk-position-medium uk-position-fixed">
-  #   <ul class="uk-dotnav uk-dotnav-vertical">...</ul>
-  # </div>
   defcomponent :dotnav,
     tag: :ul,
     styles: [
       :vertical
     ]
-  defcomponent :dotnav_item, tag: :li
+  defcomponent :dotnav_item,
+    tag: :li,
+    seed: :never
 
-  defcomponent :nav,
-    styles: [
+  def nav_styles do
+    [
       :default,
       :primary,
-      :center
-    ],
-    component_options: [
+      :center,
+      :dropdown_nav,
+      :navbar_dropdown_nav
+    ]    
+  end
+
+  def nav_options do
+    [
       :targets,
       :toggle,
       :content,
@@ -39,20 +38,54 @@ defmodule UIKit.Element.Navigation do
       :animation,
       :duration
     ]
-  defcomponent :nav_sub, tag: :ul
+  end
+
+  ## nav component
+  # <ul class="uk-nav">
+  # <ul class="uk-nav uk-nav-default">
+  # <ul class="uk-nav uk-nav-primary">...</ul>
+  # <ul class="uk-nav uk-nav-default uk-nav-center">...</ul>
+  # <ul class="uk-nav uk-dropdown-nav">...</ul>
+  # <ul class="uk-nav uk-navbar-dropdown-nav">...</ul>
+  defcomponent :nav,
+    tag: :ul,
+    seed: :always,
+    styles: __MODULE__.nav_styles,
+    component_options: __MODULE__.nav_options
+  ## accordion
+  # <ul class="uk-nav-default uk-nav-parent-icon" uk-nav>
+  # <ul class="uk-nav-parent-icon" uk-nav="multiple: true">...</ul>
+  defcomponent :nav_accordion,
+    tag: :ul,
+    component: :nav,
+    seed: :never,
+    attr: true
+
+  ## nested
+  # <ul class="uk-nav-sub">
+  # <li><a href="#">Sub item</a></li>
+  defcomponent :nav_sub,
+    tag: :ul
+  defcomponent :nav_sub_item,
+    tag: :li,
+    seed: :never
   defcomponent :nav_parent_icon,
     tag: :ul,
-    seed: false,
+    seed: :empty,
     attr: "uk-nav"
+  ## header footer
+  # <li class="uk-nav-header"></li>
+  # <li class="uk-nav-divider"></li>
   defcomponent :nav_header, tag: :li
   defcomponent :nav_footer, tag: :li
+  defcomponent :nav_divider, tag: :li
 
   # where should this be?
   defstyle :dropdown_nav
 
   defcomponent :navbar,
     tag: :nav,
-    seed: false,
+    seed: :empty,
     attr: "uk-navbar",
     component_options: [
       :align,
@@ -67,7 +100,7 @@ defmodule UIKit.Element.Navigation do
       :duration
     ]
   defcomponent :navbar_container,
-    seed: false,
+    seed: :empty,
     attr: "uk-navbar",
     syltes: [
       :transparent
@@ -124,7 +157,7 @@ defmodule UIKit.Element.Navigation do
 
   defcomponent :tab,
     tag: :ul,
-    seed: false,
+    seed: :empty,
     attr: true,
     styles: [
       :bottom,
@@ -142,6 +175,6 @@ defmodule UIKit.Element.Navigation do
     ]
 
   defcomponent :totop,
-    seed: false,
+    seed: :empty,
     attr: true
 end

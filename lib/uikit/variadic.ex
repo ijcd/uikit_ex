@@ -51,11 +51,20 @@ defmodule UIKit.Variadic do
     quote location: :keep, bind_quoted: [name: name, n: n] do
       params = for p <- 1..n, do: Macro.var(:"p#{p}", nil)
 
+      defmacro unquote(name)(unquote_splicing(params), opts, do: block) when is_list(opts) do
+        name = unquote(name)
+        params = unquote(params)
+        quote location: :keep do
+          unquote(name)(unquote(params), unquote(opts), do: unquote(block))
+        end
+      end
+
+      # uk_tag(:expand, [do: "content"])
       defmacro unquote(name)(unquote_splicing(params), do: block) do
         name = unquote(name)
         params = unquote(params)
         quote location: :keep do
-          unquote(name)(unquote(params), do: unquote(block))
+          unquote(name)(unquote(params), [], do: unquote(block))
         end
       end
     end

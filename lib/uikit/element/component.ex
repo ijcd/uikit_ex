@@ -4,7 +4,7 @@ defmodule UIKit.Element.Component do
   # <li class="uk-open"></li>
   defcomponent :accordion,
     tag: :ul,
-    seed: false,
+    seed: :empty,
     attr: true,
     component_opts: [
       :targets,
@@ -19,7 +19,7 @@ defmodule UIKit.Element.Component do
   defcomponent :accordion_content, tag: :div
 
   defcomponent :alert,
-    seed: false,
+    seed: :empty,
     attr: true,
     styles: [
       :primary,
@@ -194,7 +194,7 @@ defmodule UIKit.Element.Component do
     ]
 
   defcomponent :drop,
-    seed: false,
+    seed: :empty,
     attr: true,
     styles: [
       :bottom_left,
@@ -229,7 +229,7 @@ defmodule UIKit.Element.Component do
   defcomponent :drop_grid
 
   defcomponent :dropdown,
-    seed: false,
+    seed: :empty,
     attr: true,
     styles: [
       :bottom_left,
@@ -263,7 +263,7 @@ defmodule UIKit.Element.Component do
 
   # TODO: "formify" macro that walks the AST and converts tags into these
   defcomponent :form,
-    seed: false,
+    seed: :empty,
     styles: [
       # style
       :danger,
@@ -309,7 +309,7 @@ defmodule UIKit.Element.Component do
 
   defcomponent :heading,
     tag: :h1,
-    seed: false,
+    seed: :never,
     styles: [
       :primary,
       :hero,
@@ -318,16 +318,22 @@ defmodule UIKit.Element.Component do
       :line
     ]
 
-  defcomponent :icon,
-    styles: [
-      :link,
-      :button,
-      :image,
-    ],
-    component_options: [
-      :icon,
-      :ratio
-    ]
+  # defcomponent :icon,
+  #   styles: [
+  #     :link,
+  #     :button,
+  #     :image,
+  #   ],
+  #   component_options: [
+  #     :icon,
+  #     :ratio
+  #   ]
+
+  defmacro uk_icon_link(icon) do
+    quote location: :keep do
+      Taggart.HTML.a(nil, href: "#", "uk-icon": "icon: #{unquote(icon)}")
+    end
+  end
 
   defcomponent :iconnav,
     tag: :ul,
@@ -347,7 +353,7 @@ defmodule UIKit.Element.Component do
     ]
 
   defcomponent :lightbox,
-    seed: false,
+    seed: :empty,
     attr: true,
     component_options: [
       :animation,
@@ -392,7 +398,7 @@ defmodule UIKit.Element.Component do
   defboolean :marker
 
   defcomponent :modal,
-    seed: false,
+    seed: :empty,
     attr: true,
     styles: [
       :conatiner,
@@ -418,7 +424,7 @@ defmodule UIKit.Element.Component do
     ]
 
   defcomponent :offcanvas,
-    seed: false,
+    seed: :empty,
     attr: true,
     component_options: [
       :mode,
@@ -430,8 +436,13 @@ defmodule UIKit.Element.Component do
   # TODO: maybe close() needs to detect what it is inside somehow?
   defcomponent :offcanvas_close
 
+  defcomponent :overlay,
+    styles: [
+      :default,
+      :primary
+    ]    
   defstyle :overlay,
-    seed: true,
+    seed: :always,
     styles: [
       :default,
       :primary
@@ -459,7 +470,7 @@ defmodule UIKit.Element.Component do
   defboolean :slidenav_previous
 
   defcomponent :slideshow,
-    seed: false,
+    seed: :empty,
     attr: true,
     component_options: [
       :slide,
@@ -487,7 +498,7 @@ defmodule UIKit.Element.Component do
   defcomponent :slideshow_parallax
 
   defcomponent :sortable,
-    seed: false,
+    seed: :empty,
     attr: true,
     component_options: [
       :group,
@@ -508,7 +519,7 @@ defmodule UIKit.Element.Component do
   defcomponent :spinner
 
   defcomponent :switcher,
-    seed: false,
+    seed: :empty,
     attr: true,
     component_options: [
       :connect,
@@ -540,7 +551,7 @@ defmodule UIKit.Element.Component do
 
   defcomponent :text,
     tag: :p,
-    seed: false,
+    seed: :empty,
     styles: [
       # modifiers
       :lead,
@@ -635,7 +646,7 @@ defmodule UIKit.Element.Component do
 
   # TODO: bring in comonent_option docs for all items
   defcomponent :toggle,
-    seed: false,
+    seed: :empty,
     attr: true,
     tag: [:button, :a],
     component_options: [
@@ -648,7 +659,7 @@ defmodule UIKit.Element.Component do
     ]
 
   defcomponent :tooltip,
-    seed: false,
+    seed: :empty,
     attr: true,
     component_options: [
       :pos,

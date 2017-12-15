@@ -4,23 +4,28 @@ defmodule UIKit.Attributes do
   @doc false
   defmodule TagContext do
     @moduledoc false
-    defstruct [:component, :seed, :attr]
+    defstruct [:component, :seed, :attr, :opts]
 
     def new(component, opts \\ []) do
       # seed style if indicated, append given styles for component
-      # [{:width, nil}, {:width, :auto}
+      # values are (:always, :empty, :never)
+      # default is :always for components, and :empty for styles
+      # [{:width, nil}, {:width, :auto}]
       # <div class="uk-width uk-width-auto">
-      seed = Keyword.get(opts, :seed, true)
+      seed = Keyword.get(opts, :seed, :always)
 
       # attr is boolean or value, named by component
       # {:width, true}    {:width, "auto"}
       # <div uk-width> or <div uk-width="auto">
       attr = Keyword.get(opts, :attr, false)
 
+      component_opts = Keyword.get(opts, :opts, [])
+
       %__MODULE__{
         component: component,
         seed: seed,
         attr: attr,
+        opts: component_opts
       }
     end
   end
@@ -32,7 +37,12 @@ defmodule UIKit.Attributes do
     def new(component, styles, opts \\ []) do
       seed = Keyword.get(opts, :seed, false)
       attr = Keyword.get(opts, :attr, false)
-      %__MODULE__{component: component, seed: seed, attr: attr, styles: styles}
+      %__MODULE__{
+        component: component,
+        seed: seed,
+        attr: attr,
+        styles: styles
+      }
     end
   end
 
@@ -40,7 +50,10 @@ defmodule UIKit.Attributes do
     defstruct [:name, :value]
 
     def new({name, value}) do
-      %__MODULE__{name: name, value: value}
+      %__MODULE__{
+        name: name,
+        value: value
+      }
     end
   end
 
@@ -48,16 +61,22 @@ defmodule UIKit.Attributes do
   # Initial entry
   @doc false
   def build(context, styles) do
-    # attr indicates a boolean attribute, or similar <div uk-grid> or <div uk-grid="foo: 1">
-    attr = case context.attr do
-      true -> [{classify(["uk", context.component]), context.attr}]
-      _ -> []
+    # seed indicates that the root class should always be indlucde <div class="uk-flex uk-flex-inline:>
+    seed = case {context.seed, styles} do
+      {:always, _} -> [class: classify(["uk", context.component])]
+      {:empty, []} -> [class: classify(["uk", context.component])]
+      {:empty, _} -> []
+      {:never, _} -> []
     end
 
-    # seed indicates that the root class should always be indlucde <div class="uk-flex uk-flex-inline:>
-    seed = case context.seed do
-      true -> [class: classify(["uk", context.component])]
-      _ -> []
+    # attr indicates a boolean attribute, or similar <div uk-grid> or <div uk-grid="foo: 1">
+    attr = case {context.opts, context.attr} do
+      # no component options, so fall back to attr
+      {[], false} -> []
+      {[], _} -> [{classify(["uk", context.component]), context.attr}]
+
+      # build attr from component options
+      _ -> [{classify(["uk", context.component]), keyword_to_options(context.opts)}]
     end
 
     compress(attr ++ seed ++ (styles |> List.flatten |> Enum.map(&make_attr(context, &1))))
@@ -75,9 +94,12 @@ defmodule UIKit.Attributes do
 
   @doc false
   def make_attr(_context, %ComponentClass{} = cc) do
-    seed = cond do
-      cc.seed || cc.styles == [] -> [{:class, classify(["uk", cc.component])}]
-      true -> []
+    # seed indicates that the root class should always be indlucde <div class="uk-flex uk-flex-inline:>
+    seed = case {cc.seed, cc.styles} do
+      {:always, _} -> [class: classify(["uk", cc.component])]
+      {:empty, []} -> [class: classify(["uk", cc.component])]
+      {:empty, _} -> []
+      {:never, _} -> []
     end
 
     attr = cond do
@@ -90,7 +112,7 @@ defmodule UIKit.Attributes do
         attr ++ seed
       Keyword.keyword?(cc.styles) ->
         name = classify(["uk", cc.component])
-        value = Enum.map(cc.styles, fn {k, v} -> "#{dasherize(k)}: #{v}" end) |> Enum.join("; ")
+        value = keyword_to_options(cc.styles)
         attr ++ [{name, value}]
       true -> 
         attr ++ seed ++ Enum.map(cc.styles, &make_attr(cc, &1))
@@ -111,6 +133,11 @@ defmodule UIKit.Attributes do
   end
 
   @doc false
+  def keyword_to_options(kw) do
+    Enum.map(kw, fn {k, v} -> "#{dasherize(k)}: #{v}" end) |> Enum.join("; ")
+  end
+
+  @doc false
   def dasherize(nil), do: nil
   def dasherize(s), do: String.replace("#{s}", "_", "-")
 
@@ -119,5 +146,6 @@ defmodule UIKit.Attributes do
     segments
       |> Enum.map(&dasherize/1)
       |> Enum.join("-")
+      |> String.replace("-@", "@")
   end
 end

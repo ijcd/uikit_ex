@@ -63,7 +63,7 @@ defmodule UIKit.Element.Style do
   end
 
   defcomponent :margin,
-    seed: false,
+    seed: :empty,
     styles: __MODULE__.margin_styles
   defstyle :margin,
     styles: __MODULE__.margin_styles
@@ -73,6 +73,10 @@ defmodule UIKit.Element.Style do
       :first_column
     ]
 
+  defcomponent :panel,
+    styles: [
+      :scrollable
+    ]
   defstyle :panel,
     styles: [
       :scrollable
@@ -105,7 +109,6 @@ defmodule UIKit.Element.Style do
     ]
 
   defcomponent :inline,
-    seed: false,
     styles: [
       :clip
     ]
@@ -269,7 +272,7 @@ defmodule UIKit.Element.Style do
     ]
 
   defcomponent :width,
-    seed: false,
+    seed: :empty,
     styles: [
       # columns
       :"1-1",
@@ -302,7 +305,7 @@ defmodule UIKit.Element.Style do
     ]
 
   defstyle :width,
-    seed: false,
+    seed: :empty,
     styles: [
       # columns
       :"1-1",
@@ -335,7 +338,7 @@ defmodule UIKit.Element.Style do
     ]
 
   defstyle :child_width,
-    seed: false,
+    seed: :empty,
     styles: [
       # columns
       :"1-1",

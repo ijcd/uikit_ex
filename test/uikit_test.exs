@@ -1,19 +1,19 @@
 defmodule UIKit.UIKitTest do
   use ExUnit.Case
   import UIKit
-  import UIKit.Element.{Behavior,Component,Layout,Style}
+  import UIKit.Element.{Behavior,Component,Layout,Navigation,Style}
 
   defp s2s(ss), do: Phoenix.HTML.safe_to_string(ss)
 
   defcomponent :foo
   defcomponent :tag, tag: :span
-  defcomponent :seed, seed: true
-  defcomponent :unseed, seed: false
+  defcomponent :seed, seed: :always
+  defcomponent :unseed, seed: :never
   defcomponent :attr, attr: true
-  defcomponent :attr_unseed, attr: true, seed: false
+  defcomponent :attr_unseed, attr: true, seed: :never
 
   defstyle :bar
-  defstyle :barseed, seed: true
+  defstyle :barseed, seed: :always
 
   describe "class" do
     test "renders a basic class" do
@@ -61,7 +61,7 @@ defmodule UIKit.UIKitTest do
       assert ~s|<div class="uk-animation-kenburns uk-position-center">content</div>| == s2s(uk(:div, animation(:kenburns), position(:center), do: "content"))
     end
 
-    test "renders a conent tag with multiple styles and attrs" do
+    test "renders a content tag with multiple styles and attrs" do
       assert ~s|<div alt="" class="uk-animation-kenburns uk-position-center uk-position-small" src="/images/dark.jpg">content</div>| == s2s(uk(:div, animation(:kenburns), position(:center, :small), attr(src: "/images/dark.jpg", alt: ""), do: "content"))
     end
   end
@@ -106,6 +106,18 @@ defmodule UIKit.UIKitTest do
     test "works with recursive versions of the same tag (regression)" do
       assert ~s|<div class="uk-section"><div class="uk-section uk-section-default"></div></div>| == s2s(uk_section(do: uk_section(:default, do: "")))
     end
+
+    test "seed_empty prevents seeding for empty tags" do
+      assert ~s|<ul class=\"uk-breadcrumb\"><li>Go</li></ul>| == s2s(uk_breadcrumb(do: uk_breadcrumb_item(do: "Go")))          
+    end
+
+    test "allows specifying the component name" do
+      assert ~s|<ul uk-nav class="uk-nav-primary uk-nav-parent-icon"></ul>| == s2s(uk_nav_accordion(:primary, :parent_icon, do: nil))
+    end
+
+    test "allows specifying component options" do
+      assert ~s|<ul class="uk-nav-primary uk-nav-parent-icon" uk-nav="multiple: true"></ul>| == s2s(uk_nav_accordion(:primary, :parent_icon, [multiple: true], do: nil))
+    end
   end
 
   describe "defstyle" do
@@ -139,6 +151,10 @@ defmodule UIKit.UIKitTest do
 
     test "creates attrs for attr styles (regression)" do
       assert ~s|<header uk-grid class="uk-comment-header uk-grid-medium uk-flex uk-flex-middle"></header>| == s2s(uk_comment_header(grid(:medium), flex(:middle), do: nil))
+    end
+
+    test "handles breakpoints (breakpoints)" do
+      assert ~s|<div class="uk-visible@l"></div>| == s2s(uk_unseed(visible("@l"), do: nil))
     end
   end
 

@@ -71,9 +71,10 @@ defmodule UIKit.Element.Layout do
     ] |> List.flatten
   end
 
+  # TODO: uk-flex-first and uk-flex-last are indicators that don't need the seed
   defcomponent :flex, styles: __MODULE__.flex_styles
   defstyle :flex,
-    seed: true,
+    seed: :always,
     styles: __MODULE__.flex_styles
 
   def grid_styles do
@@ -91,12 +92,13 @@ defmodule UIKit.Element.Layout do
     ]
   end
 
+  # TODO: uk-grid-margin is an indicators that doesn't need the seed
   # <div class="uk-flex-center" uk-grid>
   #     <div></div>
   #     <div class="uk-flex-first"></div>
   # </div>
   defcomponent :grid,
-    seed: false,
+    seed: :never,
     attr: true,
     styles: __MODULE__.grid_styles,
     component_options: [
@@ -144,7 +146,7 @@ defmodule UIKit.Element.Layout do
   end
 
   defcomponent :position,
-    seed: false,
+    seed: :empty,
     styles: __MODULE__.position_styles
   defstyle :position,
     styles: __MODULE__.position_styles
