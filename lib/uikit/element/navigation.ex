@@ -114,7 +114,9 @@ defmodule UIKit.Element.Navigation do
   defstyle :navbar_toggle
   defboolean :navbar_toggle_icon
 
-  defcomponent :navbar_dropdown
+  defcomponent :navbar_dropdown,
+    component: :drop
+
   defboolean :navbar_dropdown_nav
 
   defstyle :navbar_dropdown_width_2

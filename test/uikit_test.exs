@@ -119,8 +119,25 @@ defmodule UIKit.UIKitTest do
       assert ~s|<ul class="uk-nav-primary uk-nav-parent-icon" uk-nav="multiple: true"></ul>| == s2s(uk_nav_accordion(:primary, :parent_icon, [multiple: true], do: nil))
     end
 
+    test "allows specifying only component options" do
+      assert ~s|<ul uk-nav="multiple: true"></ul>| == s2s(uk_nav_accordion([multiple: true], do: nil))
+    end
+
     test "allows specifying an alternate seed_value" do
       assert ~s|<nav uk-navbar class=\"uk-navbar-container uk-margin\"></nav>| == s2s(uk_navbar(margin(), do: nil))
+    end
+
+    test "works with opts given as a variable" do
+      opts = [cls_drop: "uk-navbar-dropdown", boundary: "!nav"]
+      assert ~s|<div class=\"uk-navbar-dropdown\" uk-drop=\"cls-drop: uk-navbar-dropdown; boundary: !nav\"></div>| == s2s(uk_navbar_dropdown([__uk_opts: opts], do: nil))
+    end
+
+    def the_opts do
+      [cls_drop: "uk-navbar-dropdown", boundary: "!nav"]
+    end
+
+    test "works with opts given as a function" do
+      assert ~s|<div class=\"uk-navbar-dropdown\" uk-drop=\"cls-drop: uk-navbar-dropdown; boundary: !nav\"></div>| == s2s(uk_navbar_dropdown([__uk_opts: the_opts()], do: nil))
     end
   end
 

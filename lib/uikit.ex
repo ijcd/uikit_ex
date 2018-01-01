@@ -160,6 +160,12 @@ defmodule UIKit do
           attr = unquote(attr)
           opts = unquote(opts)
 
+	  opts = if Keyword.has_key?(opts, :__uk_opts) do
+	    opts[:__uk_opts]
+	  else
+	    opts
+	  end
+
           Taggart.HTML.unquote(tag)(
             nil,
             Attributes.build(
@@ -180,6 +186,13 @@ defmodule UIKit do
       #
       # uk_name/2 - forwards results to uk_name/3 with empty options default
       #
+
+      defmacro unquote(:"uk_#{name}")([{_k, _v} | _rest] = opts, do: block) when is_list(opts) do
+	name = :"uk_#{unquote(name)}"
+	quote location: :keep do
+	  unquote(name)([], unquote(opts), do: unquote(block))
+	end
+      end
 
       defmacro unquote(:"uk_#{name}")(styles, do: block) when is_list(styles) do
         name = :"uk_#{unquote(name)}"
