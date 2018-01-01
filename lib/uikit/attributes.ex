@@ -4,7 +4,7 @@ defmodule UIKit.Attributes do
   @doc false
   defmodule TagContext do
     @moduledoc false
-    defstruct [:component, :seed, :attr, :opts]
+    defstruct [:component, :seed, :seed_value, :attr, :opts]
 
     def new(component, opts \\ []) do
       # seed style if indicated, append given styles for component
@@ -13,6 +13,7 @@ defmodule UIKit.Attributes do
       # [{:width, nil}, {:width, :auto}]
       # <div class="uk-width uk-width-auto">
       seed = Keyword.get(opts, :seed, :always)
+      seed_value = Keyword.get(opts, :seed_value, component)
 
       # attr is boolean or value, named by component
       # {:width, true}    {:width, "auto"}
@@ -24,6 +25,7 @@ defmodule UIKit.Attributes do
       %__MODULE__{
         component: component,
         seed: seed,
+        seed_value: seed_value,
         attr: attr,
         opts: component_opts
       }
@@ -63,8 +65,8 @@ defmodule UIKit.Attributes do
   def build(context, styles) do
     # seed indicates that the root class should always be indlucde <div class="uk-flex uk-flex-inline:>
     seed = case {context.seed, styles} do
-      {:always, _} -> [class: classify(["uk", context.component])]
-      {:empty, []} -> [class: classify(["uk", context.component])]
+      {:always, _} -> [class: classify(["uk", context.seed_value])]
+      {:empty, []} -> [class: classify(["uk", context.seed_value])]
       {:empty, _} -> []
       {:never, _} -> []
     end

@@ -329,6 +329,13 @@ defmodule UIKit.Element.Component do
   #     :ratio
   #   ]
 
+  defmacro uk_icon(icon, styles \\ []) do
+    quote location: :keep do
+      styles = [attr("uk-icon": "icon: #{unquote(icon)}"), unquote(styles)]
+      uk(:span, styles)
+    end
+  end
+
   defmacro uk_icon_link(icon) do
     quote location: :keep do
       Taggart.HTML.a(nil, href: "#", "uk-icon": "icon: #{unquote(icon)}")

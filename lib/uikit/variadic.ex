@@ -64,7 +64,7 @@ defmodule UIKit.Variadic do
         name = unquote(name)
         params = unquote(params)
         quote location: :keep do
-          unquote(name)(unquote(params), [], do: unquote(block))
+          unquote(name)(unquote(params), [], do: unquote(block))          
         end
       end
     end

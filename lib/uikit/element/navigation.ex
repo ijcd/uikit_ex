@@ -85,8 +85,11 @@ defmodule UIKit.Element.Navigation do
 
   defcomponent :navbar,
     tag: :nav,
-    seed: :empty,
-    attr: "uk-navbar",
+    seed_value: "navbar-container",
+    attr: true,
+    styles: [
+      :transparent
+    ],
     component_options: [
       :align,
       :mode,
@@ -98,12 +101,6 @@ defmodule UIKit.Element.Navigation do
       :dropbar,
       :dropbar_mode,
       :duration
-    ]
-  defcomponent :navbar_container,
-    seed: :empty,
-    attr: "uk-navbar",
-    syltes: [
-      :transparent
     ]
   defcomponent :navbar_left
   defcomponent :navbar_center

@@ -118,6 +118,10 @@ defmodule UIKit.UIKitTest do
     test "allows specifying component options" do
       assert ~s|<ul class="uk-nav-primary uk-nav-parent-icon" uk-nav="multiple: true"></ul>| == s2s(uk_nav_accordion(:primary, :parent_icon, [multiple: true], do: nil))
     end
+
+    test "allows specifying an alternate seed_value" do
+      assert ~s|<nav uk-navbar class=\"uk-navbar-container uk-margin\"></nav>| == s2s(uk_navbar(margin(), do: nil))
+    end
   end
 
   describe "defstyle" do

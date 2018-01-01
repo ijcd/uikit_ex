@@ -121,6 +121,7 @@ defmodule UIKit do
       component: Keyword.get(opts, :component, name),
       tag: Keyword.get(opts, :tag, :div),
       seed: Keyword.get(opts, :seed, :always),
+      seed_value: Keyword.get(opts, :seed_value, name),
       attr: Keyword.get(opts, :attr, false),
     ] do
       require Taggart.HTML
@@ -147,6 +148,7 @@ defmodule UIKit do
         component = unquote(component)
         tag = unquote(tag)
         seed = unquote(seed)
+        seed_value = unquote(seed_value)
         attr = unquote(attr)
 
         quote location: :keep do
@@ -154,6 +156,7 @@ defmodule UIKit do
           component = unquote(component)
           tag = unquote(tag)
           seed = unquote(seed)
+          seed_value = unquote(seed_value)
           attr = unquote(attr)
           opts = unquote(opts)
 
@@ -163,6 +166,7 @@ defmodule UIKit do
               Attributes.TagContext.new(
                 component,
                 seed: seed,
+                seed_value: seed_value,
                 attr: attr,
                 opts: opts
               ),
