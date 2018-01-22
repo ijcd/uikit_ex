@@ -60,11 +60,11 @@ defmodule UIKit.Element.Behavior do
   defcomponent :parallax, options: __MODULE__.parallax_options
   defstyle :parallax, options: __MODULE__.parallax_options
 
-  defboolean :scroll,
-    component_options: [
-      :duration,
-      :offset
-    ]
+  # defboolean :scroll,
+  #   component_options: [
+  #     :duration,
+  #     :offset
+  #   ]
 
   def scrollspy_options do
     [

@@ -118,9 +118,9 @@ defmodule UIKit.Element.Navigation do
     attr: true
 
   defstyle :navbar_toggle
-  defboolean :navbar_toggle_icon
-
-  defboolean :navbar_dropdown_nav
+  
+  # defboolean :navbar_toggle_icon
+  # defboolean :navbar_dropdown_nav
 
   defstyle :navbar_dropdown_width_2
   defstyle :navbar_dropdown_width_3
@@ -155,26 +155,30 @@ defmodule UIKit.Element.Navigation do
     attr: true
 
   defcomponent :slidenav_container
-  defcomponent :slidenav_next,
-    tag: :a,
-    seed: :never,
-    attr: true
   defcomponent :slidenav_previous,
     tag: :a,
+    component: :slidenav,
     seed: :never,
-    attr: true
+    attr: "uk-slidenav-previous",
+    attr_opts: [:href]
+  defcomponent :slidenav_next,
+    tag: :a,
+    component: :slidenav,
+    seed: :never,
+    attr: "uk-slidenav-next",
+    attr_opts: [:href]
 
   defcomponent :subnav,
     tag: :ul,
+    seed: :always,
     styles: [
       :divider,
       :pill
     ]
-  defcomponent :subnav_item
 
   defcomponent :tab,
     tag: :ul,
-    seed: :empty,
+    seed: :never,
     attr: true,
     styles: [
       :bottom,

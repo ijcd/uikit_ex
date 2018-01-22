@@ -149,9 +149,9 @@ defmodule UIKit.Element.Component do
   # </div>
   # <button class="uk-modal-close-default" type="button" uk-close></button>
   # TODO: see modal?
-  defboolean :close,
-    styles: [:large],
-    allowed_tags: [:a, :button]
+  # defboolean :close,
+  #   styles: [:large],
+  #   allowed_tags: [:a, :button]
 
   defcomponent :comment, tag: :article, styles: :primary
   defcomponent :comment_header, tag: :header
@@ -229,7 +229,7 @@ defmodule UIKit.Element.Component do
   defcomponent :drop_grid
 
   defcomponent :dropdown,
-    seed: :empty,
+    seed: :never,
     attr: true,
     styles: [
       :bottom_left,
@@ -402,7 +402,7 @@ defmodule UIKit.Element.Component do
     ]
   defcomponent :list_item, tag: :li
 
-  defboolean :marker
+  # defboolean :marker
 
   defcomponent :modal,
     seed: :empty,
@@ -473,7 +473,7 @@ defmodule UIKit.Element.Component do
   defstyle :search_toggle
 
   defcomponent :slideshow,
-    seed: :empty,
+    seed: :never,
     attr: true,
     component_options: [
       :slide,
@@ -493,12 +493,27 @@ defmodule UIKit.Element.Component do
       :index
     ]
   defcomponent :slideshow_items, tag: :ul
-  defcomponent :slideshow_item,
-    styles: [
-      :next,
-      :previous
-    ]
+  # defcomponent :slideshow_item,
+  #   styles: [
+  #     :next,
+  #     :previous
+  #   ]
   defcomponent :slideshow_parallax
+
+  # defmacro uk_icon(icon, styles \\ []) do
+  #   quote location: :keep do
+  #     styles = [attr("uk-icon": "icon: #{unquote(icon)}"), unquote(styles)]
+  #     uk(:span, styles)
+  #   end
+  # end
+
+  defmacro uk_slideshow_item(index, styles \\ [], do: block) do
+    quote location: :keep do
+      styles = [attr("uk-slideshow-item": "#{unquote(index)}"), unquote(styles)]
+      uk(:li, styles, do: unquote(block))
+    end
+  end
+
 
   defcomponent :sortable,
     seed: :empty,

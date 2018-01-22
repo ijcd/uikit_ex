@@ -68,8 +68,9 @@ defmodule UIKit.Attributes do
   # Initial entry
   @doc false
   def build(context, styles) do
-    # seed indicates that the root class should always be indlucde <div class="uk-flex uk-flex-inline:>
-    seed = case {context.seed, styles} do
+    # seed indicates that the root class should always be included <div class="uk-flex uk-flex-inline:>
+    # for :empty, only match on atom or string (non-struct) styles (indicates same component)
+    seed = case {context.seed, Enum.filter(styles, fn s -> is_atom(s) or is_binary(s) end)} do
       {:always, _} -> [class: classify(["uk", context.seed_value])]
       {:empty, []} -> [class: classify(["uk", context.seed_value])]
       {:empty, _} -> []
@@ -80,7 +81,8 @@ defmodule UIKit.Attributes do
     attr = case {context.opts, context.attr} do
       # no component options, so fall back to attr
       {[], false} -> []
-      {[], _} -> [{classify(["uk", context.component]), context.attr}]
+      {[], true} -> [{classify(["uk", context.component]), context.attr}]         # uk-grid
+      {[], _} -> [{classify([context.attr]), true}]                               # uk-slidenav-prev
 
       # build attr from component options
       _ -> [{classify(["uk", context.component]), keyword_to_options(context.opts)}]

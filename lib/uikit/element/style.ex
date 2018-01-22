@@ -9,7 +9,10 @@ defmodule UIKit.Element.Style do
   defstyle :align,
     styles: (for col <- [:left, :center, :right], bp <- [:s, :m, :l, :xl], do: "uk-align-#{col}@{bp}")
 
+  defcomponent :light
   defstyle :light
+
+  defcomponent :dark
   defstyle :dark
 
   def margin_styles do
@@ -64,14 +67,19 @@ defmodule UIKit.Element.Style do
 
   defcomponent :margin,
     seed: :empty,
-    styles: __MODULE__.margin_styles
-  defstyle :margin,
-    styles: __MODULE__.margin_styles
-  defboolean :margin,
+    styles: __MODULE__.margin_styles,
     component_options: [
       :margin,
       :first_column
-    ]
+    ]    
+  defstyle :margin,
+    styles: __MODULE__.margin_styles,
+    component_options: [
+      :margin,
+      :first_column
+    ]    
+  defboolean :child_margins,
+    bool: :margin
 
   defcomponent :panel,
     styles: [
@@ -231,13 +239,13 @@ defmodule UIKit.Element.Style do
       :bottom_right,
     ]
 
-  defboolean :disabled,
-    allowed_tags: [
-      :input,
-      :select,
-      :textarea,
-      :button
-    ]
+  # defboolean :disabled,
+  #   allowed_tags: [
+  #     :input,
+  #     :select,
+  #     :textarea,
+  #     :button
+  #   ]
 
   defstyle :drag
 

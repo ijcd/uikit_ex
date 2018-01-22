@@ -64,7 +64,16 @@ defmodule UIKit.Variadic do
         name = unquote(name)
         params = unquote(params)
         quote location: :keep do
-          unquote(name)(unquote(params), [], do: unquote(block))          
+          unquote(name)(unquote(params), [], do: unquote(block))
+        end
+      end
+
+      # uk_tag(:expand, href: "#")
+      defmacro unquote(name)(unquote_splicing(params), opts) do
+        name = unquote(name)
+        params = unquote(params)
+        quote location: :keep do
+          unquote(name)(unquote(params), unquote(opts), do: nil)
         end
       end
     end

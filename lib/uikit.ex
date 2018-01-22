@@ -1,3 +1,5 @@
+# TODO: typecheck styles and component_options
+
 defmodule UIKit do
   alias UIKit.Attributes
   import UIKit.Variadic
@@ -236,7 +238,7 @@ defmodule UIKit do
       defmacro unquote(:"uk_#{name}")(opts) when is_list(opts) do
         name = :"uk_#{unquote(name)}"
         quote do
-          unquote(name)([], opts, do: nil)
+          unquote(name)([], unquote(opts), do: nil)
         end
       end
 
@@ -296,12 +298,23 @@ defmodule UIKit do
 
   ## Examples
 
-      iex> defboolean :scroll
+      iex> defboolean :margin
 
   """
-  defmacro defboolean(_name, _opts \\ []) do
+  defmacro defboolean(name, opts \\ []) do
     quote location: :keep, bind_quoted: [
+      name: name,
+      bool: Keyword.get(opts, :bool, name),
     ] do
+      bool_name = :"uk_#{bool}"
+
+      defmacro unquote(name)() do
+        bool_name = unquote(bool_name)
+
+        quote location: :keep do
+          attr([{unquote(bool_name), true}])
+        end      
+      end
     end
   end
 

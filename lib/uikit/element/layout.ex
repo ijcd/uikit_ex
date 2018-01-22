@@ -27,12 +27,12 @@ defmodule UIKit.Element.Layout do
       :width,
       :height
     ]
-  defboolean :cover,
-    allowed_tags: [
-      :img,
-      :video,
-      :iframe
-    ]
+  # defboolean :cover,
+  #   allowed_tags: [
+  #     :img,
+  #     :video,
+  #     :iframe
+  #   ]
 
   # TODO: bp is optional, and we probably won't pass it as a built string
   def flex_styles do
