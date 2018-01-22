@@ -110,12 +110,15 @@ defmodule UIKit.Element.Navigation do
   defcomponent :navbar_nav, tag: :ul
   defcomponent :navbar_subtitle
   defcomponent :navbar_item
+  defcomponent :navbar_dropdown,
+    component: :drop
+  defcomponent :navbar_toggle_icon,
+    tag: :span,
+    seed: :never,
+    attr: true
 
   defstyle :navbar_toggle
   defboolean :navbar_toggle_icon
-
-  defcomponent :navbar_dropdown,
-    component: :drop
 
   defboolean :navbar_dropdown_nav
 
@@ -142,9 +145,24 @@ defmodule UIKit.Element.Navigation do
   defstyle :padding, styles: __MODULE__.padding_styles
 
   defcomponent :pagination, tag: :ul
+  defcomponent :pagination_next,
+    tag: :span,
+    seed: :never,
+    attr: true
+  defcomponent :pagination_previous,
+    tag: :span,
+    seed: :never,
+    attr: true
 
-  defstyle :pagination_next
-  defstyle :pagination_previous
+  defcomponent :slidenav_container
+  defcomponent :slidenav_next,
+    tag: :a,
+    seed: :never,
+    attr: true
+  defcomponent :slidenav_previous,
+    tag: :a,
+    seed: :never,
+    attr: true
 
   defcomponent :subnav,
     tag: :ul,

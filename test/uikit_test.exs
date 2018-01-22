@@ -11,6 +11,7 @@ defmodule UIKit.UIKitTest do
   defcomponent :unseed, seed: :never
   defcomponent :attr, attr: true
   defcomponent :attr_unseed, attr: true, seed: :never
+  defcomponent :attr_from_opts, attr_opts: [:href]
 
   defstyle :bar
   defstyle :barseed, seed: :always
@@ -138,6 +139,11 @@ defmodule UIKit.UIKitTest do
 
     test "works with opts given as a function" do
       assert ~s|<div class=\"uk-navbar-dropdown\" uk-drop=\"cls-drop: uk-navbar-dropdown; boundary: !nav\"></div>| == s2s(uk_navbar_dropdown([__uk_opts: the_opts()], do: nil))
+    end
+
+    test "allows some opts to be promoted to attrs" do
+      assert ~s|<div class=\"uk-attr-from-opts\"></div>| == s2s(uk_attr_from_opts(do: nil))
+      assert ~s|<div class=\"uk-attr-from-opts\" href="#"></div>| == s2s(uk_attr_from_opts([href: "#"], do: nil))
     end
   end
 

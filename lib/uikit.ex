@@ -123,6 +123,7 @@ defmodule UIKit do
       seed: Keyword.get(opts, :seed, :always),
       seed_value: Keyword.get(opts, :seed_value, name),
       attr: Keyword.get(opts, :attr, false),
+      attr_opts: Keyword.get(opts, :attr_opts, []),
     ] do
       require Taggart.HTML
 
@@ -150,6 +151,7 @@ defmodule UIKit do
         seed = unquote(seed)
         seed_value = unquote(seed_value)
         attr = unquote(attr)
+        attr_opts = unquote(attr_opts)
 
         quote location: :keep do
           name = unquote(name)
@@ -159,12 +161,17 @@ defmodule UIKit do
           seed_value = unquote(seed_value)
           attr = unquote(attr)
           opts = unquote(opts)
+          attr_opts = unquote(attr_opts)
 
-	  opts = if Keyword.has_key?(opts, :__uk_opts) do
-	    opts[:__uk_opts]
-	  else
-	    opts
-	  end
+          # opts might be passed in programmatically
+          opts = if Keyword.has_key?(opts, :__uk_opts) do
+            opts[:__uk_opts]
+          else
+            opts
+          end
+
+          # split out the attr_opts
+          {attr_opts, opts} = Keyword.split(opts, attr_opts)
 
           Taggart.HTML.unquote(tag)(
             nil,
@@ -174,9 +181,11 @@ defmodule UIKit do
                 seed: seed,
                 seed_value: seed_value,
                 attr: attr,
+                attr_opts: attr_opts,
                 opts: opts
               ),
-              unquote(styles))
+              unquote(styles)
+            )
           ) do
             unquote(block)
           end
@@ -188,10 +197,10 @@ defmodule UIKit do
       #
 
       defmacro unquote(:"uk_#{name}")([{_k, _v} | _rest] = opts, do: block) when is_list(opts) do
-	name = :"uk_#{unquote(name)}"
-	quote location: :keep do
-	  unquote(name)([], unquote(opts), do: unquote(block))
-	end
+      	name = :"uk_#{unquote(name)}"
+      	quote location: :keep do
+      	  unquote(name)([], unquote(opts), do: unquote(block))
+      	end
       end
 
       defmacro unquote(:"uk_#{name}")(styles, do: block) when is_list(styles) do
@@ -220,6 +229,14 @@ defmodule UIKit do
         name = :"uk_#{unquote(name)}"
         quote do
           unquote(name)([unquote(style)], [], do: nil)
+        end
+      end
+
+      # uk_tag("foo")
+      defmacro unquote(:"uk_#{name}")(opts) when is_list(opts) do
+        name = :"uk_#{unquote(name)}"
+        quote do
+          unquote(name)([], opts, do: nil)
         end
       end
 

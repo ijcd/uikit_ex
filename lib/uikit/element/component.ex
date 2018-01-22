@@ -472,10 +472,6 @@ defmodule UIKit.Element.Component do
   defboolean :search_icon
   defstyle :search_toggle
 
-  defcomponent :slidenav_container
-  defboolean :slidenav_next
-  defboolean :slidenav_previous
-
   defcomponent :slideshow,
     seed: :empty,
     attr: true,

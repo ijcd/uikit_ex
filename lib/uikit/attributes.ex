@@ -4,7 +4,7 @@ defmodule UIKit.Attributes do
   @doc false
   defmodule TagContext do
     @moduledoc false
-    defstruct [:component, :seed, :seed_value, :attr, :opts]
+    defstruct [:component, :seed, :seed_value, :attr, :opts, :attr_opts]
 
     def new(component, opts \\ []) do
       # seed style if indicated, append given styles for component
@@ -20,6 +20,10 @@ defmodule UIKit.Attributes do
       # <div uk-width> or <div uk-width="auto">
       attr = Keyword.get(opts, :attr, false)
 
+      # attr_opts are passed in as opts, but become html attributes
+      attr_opts = Keyword.get(opts, :attr_opts, [])
+
+      # component opts are uikit "flags" used to control uikit components
       component_opts = Keyword.get(opts, :opts, [])
 
       %__MODULE__{
@@ -27,7 +31,8 @@ defmodule UIKit.Attributes do
         seed: seed,
         seed_value: seed_value,
         attr: attr,
-        opts: component_opts
+        opts: component_opts,
+        attr_opts: attr_opts
       }
     end
   end
@@ -81,7 +86,12 @@ defmodule UIKit.Attributes do
       _ -> [{classify(["uk", context.component]), keyword_to_options(context.opts)}]
     end
 
-    compress(attr ++ seed ++ (styles |> List.flatten |> Enum.map(&make_attr(context, &1))))
+    style_attrs = 
+      styles
+      |> List.flatten
+      |> Enum.map(&make_attr(context, &1))
+
+    compress(attr ++ seed ++ context.attr_opts ++ style_attrs)
   end
 
   @doc false
