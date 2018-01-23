@@ -98,6 +98,12 @@ defmodule UIKit.Element.Style do
 
   defstyle :clearfix
 
+  defcomponent :overflow,
+    seed: :empty,
+    styles: [
+      :hidden,
+      :auto
+    ]
   defstyle :overflow,
     styles: [
       :hidden,
@@ -161,6 +167,23 @@ defmodule UIKit.Element.Style do
       :circle
     ]
 
+  # TODO: figured out how to join defstyle/defcomonent
+  defcomponent :box_shadow,
+    seed: :empty,
+    styles: [
+      # size
+      :small,
+      :medium,
+      :large,
+      :xlarge,
+      # bottom
+      :bottom,
+      # hover
+      :hover_small,
+      :hover_medium,
+      :hover_large,
+      :hover_xlarge
+    ]
   defstyle :box_shadow,
     styles: [
       # size
@@ -177,9 +200,14 @@ defmodule UIKit.Element.Style do
       :hover_xlarge
     ]
 
+  defcomponent :dropcap,
+    tag: :p
   defstyle :dropcap
 
+  # TODO: this one is weird, somehow the options for :leader (just above are
+  # passed in as sibling attributes. This does not match the rest of UIKit
   defstyle :leader,
+    seed: :never,
     attr: true,
     component_options: [
       :fill,

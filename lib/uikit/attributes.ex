@@ -93,22 +93,24 @@ defmodule UIKit.Attributes do
       |> List.flatten
       |> Enum.map(&make_attr(context, &1))
 
-    compress(attr ++ seed ++ context.attr_opts ++ style_attrs)
+    # compress(attr ++ seed ++ context.attr_opts ++ style_attrs)
+    joined = attr ++ seed ++ context.attr_opts ++ style_attrs
+    compress(joined)
   end
 
   @doc false
-  def make_attr(context, a) when is_atom(a) or is_binary(a) do
+  defp make_attr(context, a) when is_atom(a) or is_binary(a) do
     {:class, classify(["uk", context.component, a])}
   end
 
   @doc false
-  def make_attr(_context, %RawAttribute{} = ra) do
+  defp make_attr(_context, %RawAttribute{} = ra) do
     [{ra.name, ra.value}]
   end
 
   @doc false
-  def make_attr(_context, %ComponentClass{} = cc) do
-    # seed indicates that the root class should always be indlucde <div class="uk-flex uk-flex-inline:>
+  defp make_attr(_context, %ComponentClass{} = cc) do
+    # seed indicates that the root class should always be included <div class="uk-flex uk-flex-inline:>
     seed = case {cc.seed, cc.styles} do
       {:always, _} -> [class: classify(["uk", cc.component])]
       {:empty, []} -> [class: classify(["uk", cc.component])]
@@ -117,7 +119,7 @@ defmodule UIKit.Attributes do
     end
 
     attr = cond do
-      cc.attr -> [{classify(["uk", cc.component]), cc.attr}]
+      cc.attr && !has_keywords?(cc.styles) -> [{classify(["uk", cc.component]), cc.attr}]
       true -> []
     end
 
@@ -133,30 +135,41 @@ defmodule UIKit.Attributes do
     end
   end
 
+  defp has_keywords?(kw) do
+    (length(kw) > 0) && Keyword.keyword?(kw)
+  end
+
   # [class: "foo", class: "foo-bar"] -> [class: ["foo", "foo-bar"]]
   @doc false
-  def compress(attributes) when is_list(attributes) do
-    attributes
-    |> List.flatten
-    |> Enum.group_by(&elem(&1, 0), &elem(&1, 1))
-    |> Enum.map(fn
-      {k, [v]} -> {k, v}
-      {k, v} -> {k, Enum.join(v, " ")}
-    end)
-    |> Enum.into([])
+  defp compress(attributes) when is_list(attributes) do
+    {classes, others} = 
+      attributes
+      |> List.flatten
+      |> Enum.split_with(fn {k, _} -> k == :class end)
+
+    compressed_classes =
+      classes
+      |> Enum.group_by(&elem(&1, 0), &elem(&1, 1))  # organize by items to merge, alphabetizing by second item
+      |> Enum.map(fn
+        {k, [v]} -> {k, v}                          # single element lists are unchanged
+        {k, v} -> {k, Enum.join(v, " ")}            # join everything else
+      end)
+      |> Enum.into([])
+
+    others ++ compressed_classes
   end
 
   @doc false
-  def keyword_to_options(kw) do
+  defp keyword_to_options(kw) do
     Enum.map(kw, fn {k, v} -> "#{dasherize(k)}: #{v}" end) |> Enum.join("; ")
   end
 
   @doc false
-  def dasherize(nil), do: nil
-  def dasherize(s), do: String.replace("#{s}", "_", "-")
+  defp dasherize(nil), do: nil
+  defp dasherize(s), do: String.replace("#{s}", "_", "-")
 
   @doc false
-  def classify(segments) when is_list(segments) do
+  defp classify(segments) when is_list(segments) do
     segments
       |> Enum.map(&dasherize/1)
       |> Enum.join("-")
