@@ -4,7 +4,7 @@ defmodule UIKit.Element.Component do
   # <li class="uk-open"></li>
   defcomponent :accordion,
     tag: :ul,
-    seed: :empty,
+    seed: :never,
     attr: true,
     component_opts: [
       :targets,
@@ -18,8 +18,12 @@ defmodule UIKit.Element.Component do
   defcomponent :accordion_title, tag: :h3
   defcomponent :accordion_content, tag: :div
 
+  defcomponent :open,
+    tag: :li
+  defstyle :open
+
   defcomponent :alert,
-    seed: :empty,
+    seed: :never,
     attr: true,
     styles: [
       :primary,
@@ -32,14 +36,26 @@ defmodule UIKit.Element.Component do
       :duration,
       :sel_close
     ]
-  defcomponent :alert_close, tag: :a,  attr: "uk-close"
+
+  defmacro uk_alert_close_link(href) do
+    quote location: :keep do
+      a(href: unquote(href), class: "uk-alert-close", "uk-close": true)
+    end
+  end
+
+  defmacro uk_alert_close_button() do
+    quote location: :keep do
+      button(class: "uk-alert-close", type: "button", "uk-close": true)  
+    end
+  end
 
   # Use the .uk-text-lead class from the Text component to create a leading paragraph.
   defcomponent :article, tag: :article
   defcomponent :article_title, tag: :h1
   defcomponent :article_meta, tag: :p
 
-  defstyle :background,
+  defcomponent :background,
+    seed: :empty,
     styles: [
       # style
       :default,
@@ -86,14 +102,74 @@ defmodule UIKit.Element.Component do
       :blend_luminosity
   ]
 
+  defstyle :background,
+    seed: :empty,
+    styles: [
+      # style
+      :default,
+      :muted,
+      :primary,
+      :secondary,
+      # size
+      :cover,
+      :contain,
+      # position
+      :top_left,
+      :top_center,
+      :top_right,
+      :center_left,
+      :center_center,
+      :center_right,
+      :bottom_left,
+      :bottom_center,
+      :bottom_right,
+      # repeat
+      :norepeat,
+      # attachment
+      :fixed,
+      # responsive
+      :image@s,
+      :image@m,
+      :image@l,
+      :image@xl,
+      # blend
+      :blend_multiply,
+      :blend_screen,
+      :blend_overlay,
+      :blend_darken,
+      :blend_lighten,
+      :blend_color_dodge,
+      :blend_color_burn,
+      :blend_hard_light,
+      :blend_soft_light,
+      :blend_difference,
+      :blend_exclusion,
+      :blend_hue,
+      :blend_saturation,
+      :blend_color,
+      :blend_luminosity
+  ]  
+
   # <span class="uk-badge"></span>
   # <a class="uk-badge"></a>
   defcomponent :badge, tag: :span
 
+  defmacro uk_badge_link(href, do: content) do
+    quote location: :keep do
+      a(class: "uk-badge", href: unquote(href), do: unquote(content))
+    end
+  end
+  defmacro uk_badge_link(href, content) do
+    quote location: :keep do
+      uk_badge_link(unquote(href), do: unquote(content))      
+    end
+  end
+
   # - uk-width-1-1
   # disabled
   defcomponent :button,
-    tag: [:button, :a],
+    tag: :button,
+    attr_opts: [:href, :disabled, :type],
     styles: [
       # style
       :default,
@@ -108,6 +184,25 @@ defmodule UIKit.Element.Component do
       # overlap
       :overlap
     ]
+  defcomponent :button_link,
+    tag: :a,
+    seed_value: "button",
+    component: :button,
+    attr_opts: [:href, :disabled, :type],
+    styles: [
+      # style
+      :default,
+      :primary,
+      :secondary,
+      :danger,
+      :text,
+      :link,
+      # sizes
+      :small,
+      :large,
+      # overlap
+      :overlap
+    ]    
   defcomponent :button_group
 
   defcomponent :card,
@@ -129,7 +224,8 @@ defmodule UIKit.Element.Component do
       :media_right
   ]
   defcomponent :card_header
-  defcomponent :card_body
+  defcomponent :card_body,
+    component: :card
   defcomponent :card_footer
   defcomponent :card_title, tag: :h3
   defcomponent :card_media,
@@ -194,7 +290,7 @@ defmodule UIKit.Element.Component do
     ]
 
   defcomponent :drop,
-    seed: :empty,
+    seed: :never,
     attr: true,
     styles: [
       :bottom_left,

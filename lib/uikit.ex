@@ -1,4 +1,5 @@
 # TODO: typecheck styles and component_options
+# TODO: convert any non-component_styles styles to html attributes (use pseudo-attributes for the tag, opts, etc...)
 # TODO: figured out how to join defstyle/defcomonent
 
 defmodule UIKit do
