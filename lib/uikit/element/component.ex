@@ -289,7 +289,7 @@ defmodule UIKit.Element.Component do
   # defcomponent :comment_avatar,
   #   tag: :img,
   #   attr_opts: [:src, :width, :height, :alt]
-  
+
   defcomponent :comment_title, tag: :h4
   defcomponent :comment_meta, tag: :ul
   defcomponent :comment_meta_item, tag: :li
@@ -300,22 +300,39 @@ defmodule UIKit.Element.Component do
   defstyle :comment_meta  
   defstyle :comment_avatar
 
-  defcomponent :countdown_days,
+  defcomponent :countdown,
     component_options: [:date]
+
+  defcomponent :countdown_number,
+    tag: :span
+  defcomponent :countdown_days,
+    tag: :span,
+    seed: [class: "uk-countdown-number uk-countdown-days"]
   defcomponent :countdown_hours,
     tag: :span,
-    seed: "uk-countdown-number"
+    seed: [class: "uk-countdown-number uk-countdown-hours"]
   defcomponent :countdown_minutes,
     tag: :span,
-    seed: "uk-countdown-number"
+    seed: [class: "uk-countdown-number uk-countdown-minutes"]
   defcomponent :countdown_seconds,
     tag: :span,
-    seed: "uk-countdown-number"
-  defcomponent :countdown_number,
-    tag: :span,
-    seed: "uk-countdown-number"
-  defcomponent :coundown_separator
-  defcomponent :coundown_label
+    seed: [class: "uk-countdown-number uk-countdown-seconds"]
+  defcomponent :countdown_separator,
+    tag: :span
+  defcomponent :countdown_label
+
+  defstyle :countdown_number,
+    seed_value: "countdown-number"
+  defstyle :countdown_days,
+    seed: [class: "uk-countdown-number uk-countdown-days"]
+  defstyle :countdown_hours,
+    seed: [class: "uk-countdown-number uk-countdown-hours"]
+  defstyle :countdown_minutes,
+    seed: [class: "uk-countdown-number uk-countdown-minutes"]
+  defstyle :countdown_seconds,
+    seed: [class: "uk-countdown-number uk-countdown-seconds"]
+  defstyle :countdown_separator
+
 
   defcomponent :description_list,
     tag: :dl,

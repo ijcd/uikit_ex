@@ -117,6 +117,7 @@ defmodule UIKit.Attributes do
       {:empty, []} -> [class: classify(["uk", cc.component])]
       {:empty, _} -> []
       {:never, _} -> []
+      {attrs, _} when is_list(attrs) -> attrs      
     end
 
     attr = cond do
