@@ -229,12 +229,22 @@ defmodule UIKit.Element.Component do
   defcomponent :card_footer
   defcomponent :card_title, tag: :h3
   defcomponent :card_media,
+    seed: :empty,
     styles: [
       :top,
       :bottom,
       :left,
       :right
     ]
+  defstyle :card_media,
+    seed: :empty,
+    styles: [
+      :top,
+      :bottom,
+      :left,
+      :right
+    ]
+
   # <div class="uk-card-badge uk-label"></div>
   defcomponent :card_badge
 

@@ -27,6 +27,7 @@ defmodule UIKit.Element.Layout do
       :width,
       :height
     ]
+  defstyle :cover_container
   # defboolean :cover,
   #   allowed_tags: [
   #     :img,
@@ -77,6 +78,16 @@ defmodule UIKit.Element.Layout do
     seed: :always,
     styles: __MODULE__.flex_styles
 
+  defcomponent :flex_first,
+    seed: :never
+  defcomponent :flex_last,
+    seed: :never
+  defstyle :flex_first,
+    seed: :never
+  defstyle :flex_last,
+    seed: :never
+
+
   def grid_styles do
     [
       # style
@@ -108,6 +119,20 @@ defmodule UIKit.Element.Layout do
   defstyle :grid,
     attr: true,
     styles: __MODULE__.grid_styles
+
+  # defcomponent :margin,
+  #   seed: :empty,
+  #   styles: __MODULE__.margin_styles,
+  #   component_options: [
+  #     :margin,
+  #     :first_column
+  #   ]    
+  # defstyle :margin,
+  #   styles: __MODULE__.margin_styles,
+  #   component_options: [
+  #     :margin,
+  #     :first_column
+  #   ]    
 
   defcomponent :grid_parallax,
     component_options: [
@@ -152,6 +177,11 @@ defmodule UIKit.Element.Layout do
     styles: __MODULE__.position_styles
 
   # - uk-preserve-color
+  defstyle :preserve,
+    styles: [
+      :color
+    ]
+
   # - uk-padding-remove-vertical
   defcomponent :section,
     styles: [
