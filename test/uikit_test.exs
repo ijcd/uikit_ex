@@ -12,6 +12,7 @@ defmodule UIKit.UIKitTest do
   defcomponent :attr, attr: true
   defcomponent :attr_unseed, attr: true, seed: :never
   defcomponent :attr_from_opts, attr_opts: [:href]
+  defcomponent :seed_with_attrs, seed: [type: "button"]
 
   defstyle :bar
   defstyle :barseed, seed: :always
@@ -83,6 +84,10 @@ defmodule UIKit.UIKitTest do
     test "defines an unseeded component" do
       assert ~s|<div></div>| == s2s(uk_unseed(do: nil))
     end
+
+    test "allows seeding with other attrs" do
+      assert ~s|<div type="button"></div>| == s2s(uk_seed_with_attrs(do: nil))      
+    end    
 
     test "defines a component with a boolean attr" do
       assert ~s|<div uk-attr class="uk-attr"></div>| == s2s(uk_attr(do: nil))

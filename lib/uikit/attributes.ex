@@ -75,6 +75,7 @@ defmodule UIKit.Attributes do
       {:empty, []} -> [class: classify(["uk", context.seed_value])]
       {:empty, _} -> []
       {:never, _} -> []
+      {attrs, _} when is_list(attrs) -> attrs
     end
 
     # attr indicates a boolean attribute, or similar <div uk-grid> or <div uk-grid="foo: 1">

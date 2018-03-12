@@ -259,6 +259,29 @@ defmodule UIKit.Element.Component do
   #   styles: [:large],
   #   allowed_tags: [:a, :button]
 
+  # defcomponent :close,
+  #   tag: :a,
+  #   seed: :never,
+  #   attr: true,  
+  #   attr_opts: [:href]
+  # defcomponent :close_button,
+  #   tag: :button,
+  #   seed: :never,
+  #   attr: true
+
+  defcomponent :close,
+    tag: :button,
+    seed: [type: "button"],
+    attr: true,
+    attr_opts: [:href]
+
+  defcomponent :close_link,
+    tag: :a,
+    seed: :never,
+    attr: true, 
+    component: :close,
+    attr_opts: [:href]
+
   defcomponent :comment, tag: :article, styles: :primary
   defcomponent :comment_header, tag: :header
   defcomponent :comment_avatar, tag: :img
