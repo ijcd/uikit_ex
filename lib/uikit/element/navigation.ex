@@ -175,6 +175,13 @@ defmodule UIKit.Element.Navigation do
       :divider,
       :pill
     ]
+  defstyle :subnav,
+    tag: :ul,
+    seed: :always,
+    styles: [
+      :divider,
+      :pill
+    ]
 
   defcomponent :tab,
     tag: :ul,

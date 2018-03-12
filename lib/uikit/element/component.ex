@@ -284,13 +284,21 @@ defmodule UIKit.Element.Component do
 
   defcomponent :comment, tag: :article, styles: :primary
   defcomponent :comment_header, tag: :header
-  defcomponent :comment_avatar, tag: :img
+
+  # BUG: unable to use :img since defcomponent is currently insisting on content tags
+  # defcomponent :comment_avatar,
+  #   tag: :img,
+  #   attr_opts: [:src, :width, :height, :alt]
+  
   defcomponent :comment_title, tag: :h4
   defcomponent :comment_meta, tag: :ul
   defcomponent :comment_meta_item, tag: :li
   defcomponent :comment_body
   defcomponent :comment_list, tag: :ul
   defcomponent :comment_list_item, tag: :li
+
+  defstyle :comment_meta  
+  defstyle :comment_avatar
 
   defcomponent :countdown_days,
     component_options: [:date]
@@ -515,6 +523,8 @@ defmodule UIKit.Element.Component do
 
   defcomponent :link,
     tag: :a,
+    seed: :empty,
+    attr_opts: [:href, :disabled, :type],    
     styles: [
       :muted,
       :text,
