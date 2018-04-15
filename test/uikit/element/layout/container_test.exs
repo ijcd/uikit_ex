@@ -24,6 +24,7 @@ defmodule UIKit.ContainerTest do
         end
       )
 
-    assert html == "<div class=\"uk-container uk-position-relative\"><h1>heading</h1>content</div>"
+    assert html ==
+             "<div class=\"uk-container uk-position-relative\"><h1>heading</h1>content</div>"
   end
 end

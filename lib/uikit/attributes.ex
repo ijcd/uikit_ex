@@ -44,6 +44,7 @@ defmodule UIKit.Attributes do
     def new(component, styles, opts \\ []) do
       seed = Keyword.get(opts, :seed, false)
       attr = Keyword.get(opts, :attr, false)
+
       %__MODULE__{
         component: component,
         seed: seed,
@@ -64,34 +65,43 @@ defmodule UIKit.Attributes do
     end
   end
 
-
   # Initial entry
   @doc false
   def build(context, styles) do
     # seed indicates that the root class should always be included <div class="uk-flex uk-flex-inline:>
     # for :empty, only match on atom or string (non-struct) styles (indicates same component)
-    seed = case {context.seed, Enum.filter(styles, fn s -> is_atom(s) or is_binary(s) end)} do
-      {:always, _} -> [class: classify(["uk", context.seed_value])]
-      {:empty, []} -> [class: classify(["uk", context.seed_value])]
-      {:empty, _} -> []
-      {:never, _} -> []
-      {attrs, _} when is_list(attrs) -> attrs
-    end
+    seed =
+      case {context.seed, Enum.filter(styles, fn s -> is_atom(s) or is_binary(s) end)} do
+        {:always, _} -> [class: classify(["uk", context.seed_value])]
+        {:empty, []} -> [class: classify(["uk", context.seed_value])]
+        {:empty, _} -> []
+        {:never, _} -> []
+        {attrs, _} when is_list(attrs) -> attrs
+      end
 
     # attr indicates a boolean attribute, or similar <div uk-grid> or <div uk-grid="foo: 1">
-    attr = case {context.opts, context.attr} do
-      # no component options, so fall back to attr
-      {[], false} -> []
-      {[], true} -> [{classify(["uk", context.component]), context.attr}]         # uk-grid
-      {[], _} -> [{classify([context.attr]), true}]                               # uk-slidenav-prev
+    attr =
+      case {context.opts, context.attr} do
+        # no component options, so fall back to attr
+        {[], false} ->
+          []
 
-      # build attr from component options
-      _ -> [{classify(["uk", context.component]), keyword_to_options(context.opts)}]
-    end
+        # uk-grid
+        {[], true} ->
+          [{classify(["uk", context.component]), context.attr}]
 
-    style_attrs = 
+        # uk-slidenav-prev
+        {[], _} ->
+          [{classify([context.attr]), true}]
+
+        # build attr from component options
+        _ ->
+          [{classify(["uk", context.component]), keyword_to_options(context.opts)}]
+      end
+
+    style_attrs =
       styles
-      |> List.flatten
+      |> List.flatten()
       |> Enum.map(&make_attr(context, &1))
 
     # compress(attr ++ seed ++ context.attr_opts ++ style_attrs)
@@ -112,49 +122,59 @@ defmodule UIKit.Attributes do
   @doc false
   defp make_attr(_context, %ComponentClass{} = cc) do
     # seed indicates that the root class should always be included <div class="uk-flex uk-flex-inline:>
-    seed = case {cc.seed, cc.styles} do
-      {:always, _} -> [class: classify(["uk", cc.component])]
-      {:empty, []} -> [class: classify(["uk", cc.component])]
-      {:empty, _} -> []
-      {:never, _} -> []
-      {attrs, _} when is_list(attrs) -> attrs      
-    end
+    seed =
+      case {cc.seed, cc.styles} do
+        {:always, _} -> [class: classify(["uk", cc.component])]
+        {:empty, []} -> [class: classify(["uk", cc.component])]
+        {:empty, _} -> []
+        {:never, _} -> []
+        {attrs, _} when is_list(attrs) -> attrs
+      end
 
-    attr = cond do
-      cc.attr && !has_keywords?(cc.styles) -> [{classify(["uk", cc.component]), cc.attr}]
-      true -> []
-    end
+    attr =
+      cond do
+        cc.attr && !has_keywords?(cc.styles) -> [{classify(["uk", cc.component]), cc.attr}]
+        true -> []
+      end
 
     cond do
       [] == cc.styles ->
         attr ++ seed
+
       Keyword.keyword?(cc.styles) ->
         name = classify(["uk", cc.component])
         value = keyword_to_options(cc.styles)
         attr ++ [{name, value}]
-      true -> 
+
+      true ->
         attr ++ seed ++ Enum.map(cc.styles, &make_attr(cc, &1))
     end
   end
 
   defp has_keywords?(kw) do
-    (length(kw) > 0) && Keyword.keyword?(kw)
+    length(kw) > 0 && Keyword.keyword?(kw)
   end
 
   # [class: "foo", class: "foo-bar"] -> [class: ["foo", "foo-bar"]]
   @doc false
   defp compress(attributes) when is_list(attributes) do
-    {classes, others} = 
+    {classes, others} =
       attributes
-      |> List.flatten
+      |> List.flatten()
       |> Enum.split_with(fn {k, _} -> k == :class end)
 
     compressed_classes =
       classes
-      |> Enum.group_by(&elem(&1, 0), &elem(&1, 1))  # organize by items to merge, alphabetizing by second item
+      # organize by items to merge, alphabetizing by second item
+      |> Enum.group_by(&elem(&1, 0), &elem(&1, 1))
       |> Enum.map(fn
-        {k, [v]} -> {k, v}                          # single element lists are unchanged
-        {k, v} -> {k, Enum.join(v, " ")}            # join everything else
+        # single element lists are unchanged
+        {k, [v]} ->
+          {k, v}
+
+        # join everything else
+        {k, v} ->
+          {k, Enum.join(v, " ")}
       end)
       |> Enum.into([])
 
@@ -173,8 +193,8 @@ defmodule UIKit.Attributes do
   @doc false
   defp classify(segments) when is_list(segments) do
     segments
-      |> Enum.map(&dasherize/1)
-      |> Enum.join("-")
-      |> String.replace("-@", "@")
+    |> Enum.map(&dasherize/1)
+    |> Enum.join("-")
+    |> String.replace("-@", "@")
   end
 end

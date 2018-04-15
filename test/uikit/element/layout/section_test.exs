@@ -36,7 +36,7 @@ defmodule UIKit.SectionTest do
         end
       )
 
-  assert html == "<div class=\"uk-section uk-section-muted\"><h1>heading</h1>content</div>"
+    assert html == "<div class=\"uk-section uk-section-muted\"><h1>heading</h1>content</div>"
   end
 
   test "renders muted and xsmall section" do
@@ -48,7 +48,8 @@ defmodule UIKit.SectionTest do
         end
       )
 
-    assert html == "<div class=\"uk-section uk-section-muted uk-section-xsmall\"><h1>heading</h1>content</div>"
+    assert html ==
+             "<div class=\"uk-section uk-section-muted uk-section-xsmall\"><h1>heading</h1>content</div>"
   end
 
   test "renders muted and xsmall section with padding" do
@@ -60,7 +61,8 @@ defmodule UIKit.SectionTest do
         end
       )
 
-    assert html == "<div class=\"uk-section uk-section-muted uk-section-xsmall uk-padding-remove-vertical\"><h1>heading</h1>content</div>"
+    assert html ==
+             "<div class=\"uk-section uk-section-muted uk-section-xsmall uk-padding-remove-vertical\"><h1>heading</h1>content</div>"
   end
 
   test "renders muted and xsmall section with padding (preserving order)" do
@@ -72,6 +74,7 @@ defmodule UIKit.SectionTest do
         end
       )
 
-    assert html == "<div class=\"uk-section uk-section-muted uk-padding-remove-vertical uk-section-xsmall\"><h1>heading</h1>content</div>"
+    assert html ==
+             "<div class=\"uk-section uk-section-muted uk-padding-remove-vertical uk-section-xsmall\"><h1>heading</h1>content</div>"
   end
 end

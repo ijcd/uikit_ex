@@ -2,20 +2,27 @@ defmodule UIKit.Element.Navigation do
   import UIKit
 
   # <li class="uk-disabled"><a href=""></a></li>
-  defcomponent :breadcrumb,
-    tag: :ul
-  defcomponent :breadcrumb_item,
+  defcomponent(:breadcrumb, tag: :ul)
+
+  defcomponent(
+    :breadcrumb_item,
     tag: :li,
     seed: :never
+  )
 
-  defcomponent :dotnav,
+  defcomponent(
+    :dotnav,
     tag: :ul,
     styles: [
       :vertical
     ]
-  defcomponent :dotnav_item,
+  )
+
+  defcomponent(
+    :dotnav_item,
     tag: :li,
     seed: :never
+  )
 
   def nav_styles do
     [
@@ -24,7 +31,7 @@ defmodule UIKit.Element.Navigation do
       :center,
       :dropdown_nav,
       :navbar_dropdown_nav
-    ]    
+    ]
   end
 
   def nav_options do
@@ -47,43 +54,55 @@ defmodule UIKit.Element.Navigation do
   # <ul class="uk-nav uk-nav-default uk-nav-center">...</ul>
   # <ul class="uk-nav uk-dropdown-nav">...</ul>
   # <ul class="uk-nav uk-navbar-dropdown-nav">...</ul>
-  defcomponent :nav,
+  defcomponent(
+    :nav,
     tag: :ul,
     seed: :always,
-    styles: __MODULE__.nav_styles,
-    component_options: __MODULE__.nav_options
+    styles: __MODULE__.nav_styles(),
+    component_options: __MODULE__.nav_options()
+  )
+
   ## accordion
   # <ul class="uk-nav-default uk-nav-parent-icon" uk-nav>
   # <ul class="uk-nav-parent-icon" uk-nav="multiple: true">...</ul>
-  defcomponent :nav_accordion,
+  defcomponent(
+    :nav_accordion,
     tag: :ul,
     component: :nav,
     seed: :never,
     attr: true
+  )
 
   ## nested
   # <ul class="uk-nav-sub">
   # <li><a href="#">Sub item</a></li>
-  defcomponent :nav_sub,
-    tag: :ul
-  defcomponent :nav_sub_item,
+  defcomponent(:nav_sub, tag: :ul)
+
+  defcomponent(
+    :nav_sub_item,
     tag: :li,
     seed: :never
-  defcomponent :nav_parent_icon,
+  )
+
+  defcomponent(
+    :nav_parent_icon,
     tag: :ul,
     seed: :empty,
     attr: "uk-nav"
+  )
+
   ## header footer
   # <li class="uk-nav-header"></li>
   # <li class="uk-nav-divider"></li>
-  defcomponent :nav_header, tag: :li
-  defcomponent :nav_footer, tag: :li
-  defcomponent :nav_divider, tag: :li
+  defcomponent(:nav_header, tag: :li)
+  defcomponent(:nav_footer, tag: :li)
+  defcomponent(:nav_divider, tag: :li)
 
   # where should this be?
-  defstyle :dropdown_nav
+  defstyle(:dropdown_nav)
 
-  defcomponent :navbar,
+  defcomponent(
+    :navbar,
     tag: :nav,
     seed_value: "navbar-container",
     attr: true,
@@ -102,30 +121,34 @@ defmodule UIKit.Element.Navigation do
       :dropbar_mode,
       :duration
     ]
-  defcomponent :navbar_left
-  defcomponent :navbar_center
-  defcomponent :navbar_center_left
-  defcomponent :navbar_center_right
-  defcomponent :navbar_right
-  defcomponent :navbar_nav, tag: :ul
-  defcomponent :navbar_subtitle
-  defcomponent :navbar_item
-  defcomponent :navbar_dropdown,
-    component: :drop
-  defcomponent :navbar_toggle_icon,
+  )
+
+  defcomponent(:navbar_left)
+  defcomponent(:navbar_center)
+  defcomponent(:navbar_center_left)
+  defcomponent(:navbar_center_right)
+  defcomponent(:navbar_right)
+  defcomponent(:navbar_nav, tag: :ul)
+  defcomponent(:navbar_subtitle)
+  defcomponent(:navbar_item)
+  defcomponent(:navbar_dropdown, component: :drop)
+
+  defcomponent(
+    :navbar_toggle_icon,
     tag: :span,
     seed: :never,
     attr: true
+  )
 
-  defstyle :navbar_toggle
-  
+  defstyle(:navbar_toggle)
+
   # defboolean :navbar_toggle_icon
   # defboolean :navbar_dropdown_nav
 
-  defstyle :navbar_dropdown_width_2
-  defstyle :navbar_dropdown_width_3
-  defstyle :navbar_dropdown_width_4
-  defstyle :navbar_dropdown_width_5
+  defstyle(:navbar_dropdown_width_2)
+  defstyle(:navbar_dropdown_width_3)
+  defstyle(:navbar_dropdown_width_4)
+  defstyle(:navbar_dropdown_width_5)
 
   def padding_styles do
     [
@@ -141,49 +164,67 @@ defmodule UIKit.Element.Navigation do
     ]
   end
 
-  defcomponent :padding, styles: __MODULE__.padding_styles
-  defstyle :padding, styles: __MODULE__.padding_styles
+  defcomponent(:padding, styles: __MODULE__.padding_styles())
+  defstyle(:padding, styles: __MODULE__.padding_styles())
 
-  defcomponent :pagination, tag: :ul
-  defcomponent :pagination_next,
+  defcomponent(:pagination, tag: :ul)
+
+  defcomponent(
+    :pagination_next,
     tag: :span,
     seed: :never,
     attr: true
-  defcomponent :pagination_previous,
+  )
+
+  defcomponent(
+    :pagination_previous,
     tag: :span,
     seed: :never,
     attr: true
+  )
 
-  defcomponent :slidenav_container
-  defcomponent :slidenav_previous,
+  defcomponent(:slidenav_container)
+
+  defcomponent(
+    :slidenav_previous,
     tag: :a,
     component: :slidenav,
     seed: :never,
     attr: "uk-slidenav-previous",
     attr_opts: [:href]
-  defcomponent :slidenav_next,
+  )
+
+  defcomponent(
+    :slidenav_next,
     tag: :a,
     component: :slidenav,
     seed: :never,
     attr: "uk-slidenav-next",
     attr_opts: [:href]
+  )
 
-  defcomponent :subnav,
+  defcomponent(
+    :subnav,
     tag: :ul,
     seed: :always,
     styles: [
       :divider,
       :pill
     ]
-  defstyle :subnav,
+  )
+
+  defstyle(
+    :subnav,
     tag: :ul,
     seed: :always,
     styles: [
       :divider,
       :pill
     ]
+  )
 
-  defcomponent :tab,
+  defcomponent(
+    :tab,
     tag: :ul,
     seed: :never,
     attr: true,
@@ -201,8 +242,11 @@ defmodule UIKit.Element.Navigation do
       :swiping,
       :media
     ]
+  )
 
-  defcomponent :totop,
+  defcomponent(
+    :totop,
     seed: :empty,
     attr: true
+  )
 end

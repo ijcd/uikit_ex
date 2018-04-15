@@ -36,6 +36,7 @@ defmodule UIKit.GridTest do
         end
       )
 
-    assert html == "<div uk-grid class=\"uk-grid-match uk-child-width-1-3@m\"><h1>heading</h1>content</div>"
+    assert html ==
+             "<div uk-grid class=\"uk-grid-match uk-child-width-1-3@m\"><h1>heading</h1>content</div>"
   end
 end

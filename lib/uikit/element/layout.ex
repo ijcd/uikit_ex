@@ -4,30 +4,40 @@ defmodule UIKit.Element.Layout do
   # could be style?
   def column_styles do
     [
-      (for col <- 1..6, bp <- [:s, :m, :l, :xl], do: "uk-column-1-#{col}@#{bp}"),
+      for(
+        col <- 1..6,
+        bp <- [:s, :m, :l, :xl],
+        do: "uk-column-1-#{col}@#{bp}"
+      ),
       :divider,
       :span
-    ] |> List.flatten
+    ]
+    |> List.flatten()
   end
 
-  defcomponent :column, styles: __MODULE__.column_styles
-  defstyle :column, styles: __MODULE__.column_styles
+  defcomponent(:column, styles: __MODULE__.column_styles())
+  defstyle(:column, styles: __MODULE__.column_styles())
 
-  defcomponent :container,
+  defcomponent(
+    :container,
     styles: [
       :small,
       :large,
       :expand
     ]
+  )
 
   # uk-height-viewportn
-  defcomponent :cover_container,
+  defcomponent(
+    :cover_container,
     component_options: [
       :automute,
       :width,
       :height
     ]
-  defstyle :cover_container
+  )
+
+  defstyle(:cover_container)
   # defboolean :cover,
   #   allowed_tags: [
   #     :img,
@@ -41,7 +51,11 @@ defmodule UIKit.Element.Layout do
       # kind
       :inline,
       # styles
-      (for pos <- [:left, :center, :right, :between, :around], bp <- [:s, :m, :l, :xl], do: "uk-flex-#{pos}@#{bp}"),
+      for(
+        pos <- [:left, :center, :right, :between, :around],
+        bp <- [:s, :m, :l, :xl],
+        do: "uk-flex-#{pos}@#{bp}"
+      ),
       # vertical
       :stretch,
       :top,
@@ -64,29 +78,32 @@ defmodule UIKit.Element.Layout do
       :wrap_middle,
       :wrap_bottom,
       # item order
-      (for where <- [:first, :last], bp <- [:s, :m, :l, :xl], do: "uk-flex-#{where}@#{bp}"),
+      for(
+        where <- [:first, :last],
+        bp <- [:s, :m, :l, :xl],
+        do: "uk-flex-#{where}@#{bp}"
+      ),
       # dimensions
       :none,
       :auto,
       :"1"
-    ] |> List.flatten
+    ]
+    |> List.flatten()
   end
 
   # TODO: uk-flex-first and uk-flex-last are indicators that don't need the seed
-  defcomponent :flex, styles: __MODULE__.flex_styles
-  defstyle :flex,
+  defcomponent(:flex, styles: __MODULE__.flex_styles())
+
+  defstyle(
+    :flex,
     seed: :always,
-    styles: __MODULE__.flex_styles
+    styles: __MODULE__.flex_styles()
+  )
 
-  defcomponent :flex_first,
-    seed: :never
-  defcomponent :flex_last,
-    seed: :never
-  defstyle :flex_first,
-    seed: :never
-  defstyle :flex_last,
-    seed: :never
-
+  defcomponent(:flex_first, seed: :never)
+  defcomponent(:flex_last, seed: :never)
+  defstyle(:flex_first, seed: :never)
+  defstyle(:flex_last, seed: :never)
 
   def grid_styles do
     [
@@ -108,17 +125,22 @@ defmodule UIKit.Element.Layout do
   #     <div></div>
   #     <div class="uk-flex-first"></div>
   # </div>
-  defcomponent :grid,
+  defcomponent(
+    :grid,
     seed: :never,
     attr: true,
-    styles: __MODULE__.grid_styles,
+    styles: __MODULE__.grid_styles(),
     component_options: [
       :margin,
       :first_column
     ]
-  defstyle :grid,
+  )
+
+  defstyle(
+    :grid,
     attr: true,
-    styles: __MODULE__.grid_styles
+    styles: __MODULE__.grid_styles()
+  )
 
   # defcomponent :margin,
   #   seed: :empty,
@@ -134,13 +156,15 @@ defmodule UIKit.Element.Layout do
   #     :first_column
   #   ]    
 
-  defcomponent :grid_parallax,
+  defcomponent(
+    :grid_parallax,
     component_options: [
       :target,
       :translate
     ]
+  )
 
-  def position_styles do  
+  def position_styles do
     [
       # position
       :top,
@@ -170,20 +194,25 @@ defmodule UIKit.Element.Layout do
     ]
   end
 
-  defcomponent :position,
+  defcomponent(
+    :position,
     seed: :empty,
-    styles: __MODULE__.position_styles
-  defstyle :position,
-    styles: __MODULE__.position_styles
+    styles: __MODULE__.position_styles()
+  )
+
+  defstyle(:position, styles: __MODULE__.position_styles())
 
   # - uk-preserve-color
-  defstyle :preserve,
+  defstyle(
+    :preserve,
     styles: [
       :color
     ]
+  )
 
   # - uk-padding-remove-vertical
-  defcomponent :section,
+  defcomponent(
+    :section,
     styles: [
       # style
       :default,
@@ -198,4 +227,5 @@ defmodule UIKit.Element.Layout do
       # overlap
       :overlap
     ]
+  )
 end

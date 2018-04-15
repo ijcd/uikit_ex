@@ -41,7 +41,7 @@ defmodule UIKit do
   defmacro class(attrs) when is_list(attrs) do
     quote location: :keep do
       Enum.map(unquote(attrs), &attr(class: &1))
-    end    
+    end
   end
 
   # make variadic versions
@@ -56,6 +56,7 @@ defmodule UIKit do
 
   """
   defmacro attr(), do: nil
+
   defmacro attr(attrs) when is_list(attrs) do
     quote location: :keep do
       Enum.map(unquote(attrs), &Attributes.RawAttribute.new(&1))
@@ -93,13 +94,33 @@ defmodule UIKit do
       styles = unquote(styles)
 
       case tag do
-        t when t in [:area, :base, :br, :col, :command, :embed, :hr, :img, :input, :keygen, :link, :menuitem, :meta, :param, :source, :track, :wbr] ->
+        t
+        when t in [
+               :area,
+               :base,
+               :br,
+               :col,
+               :command,
+               :embed,
+               :hr,
+               :img,
+               :input,
+               :keygen,
+               :link,
+               :menuitem,
+               :meta,
+               :param,
+               :source,
+               :track,
+               :wbr
+             ] ->
           Taggart.HTML.unquote(tag)(
             Attributes.build(Attributes.TagContext.new(nil, seed: :never), styles)
           )
-        _ -> 
+
+        _ ->
           Taggart.HTML.unquote(tag)(
-            nil, 
+            nil,
             Attributes.build(Attributes.TagContext.new(nil, seed: :never), styles),
             do: ""
           )
@@ -110,7 +131,6 @@ defmodule UIKit do
   # make variadic versions
   for n <- 1..10, do: make_variadic_uk(:uk, n)
 
-
   @doc """
   Defines a new UIKit component.
 
@@ -120,15 +140,16 @@ defmodule UIKit do
 
   """
   defmacro defcomponent(name, opts \\ []) do
-    quote location: :keep, bind_quoted: [
-      name: name,
-      component: Keyword.get(opts, :component, name),
-      tag: Keyword.get(opts, :tag, :div),
-      seed: Keyword.get(opts, :seed, :always),
-      seed_value: Keyword.get(opts, :seed_value, name),
-      attr: Keyword.get(opts, :attr, false),
-      attr_opts: Keyword.get(opts, :attr_opts, []),
-    ] do
+    quote location: :keep,
+          bind_quoted: [
+            name: name,
+            component: Keyword.get(opts, :component, name),
+            tag: Keyword.get(opts, :tag, :div),
+            seed: Keyword.get(opts, :seed, :always),
+            seed_value: Keyword.get(opts, :seed_value, name),
+            attr: Keyword.get(opts, :attr, false),
+            attr_opts: Keyword.get(opts, :attr_opts, [])
+          ] do
       require Taggart.HTML
 
       # /3
@@ -148,7 +169,8 @@ defmodule UIKit do
       #
 
       # TODO: check for allowed styles and component_options (maybe only in dev?)
-      defmacro unquote(:"uk_#{name}")(styles, opts, do: block) when is_list(opts) and is_list(styles) do
+      defmacro unquote(:"uk_#{name}")(styles, opts, do: block)
+               when is_list(opts) and is_list(styles) do
         name = unquote(name)
         component = unquote(component)
         tag = unquote(tag)
@@ -168,11 +190,12 @@ defmodule UIKit do
           attr_opts = unquote(attr_opts)
 
           # opts might be passed in programmatically
-          opts = if Keyword.has_key?(opts, :__uk_opts) do
-            opts[:__uk_opts]
-          else
-            opts
-          end
+          opts =
+            if Keyword.has_key?(opts, :__uk_opts) do
+              opts[:__uk_opts]
+            else
+              opts
+            end
 
           # split out the attr_opts
           {attr_opts, opts} = Keyword.split(opts, attr_opts)
@@ -201,14 +224,16 @@ defmodule UIKit do
       #
 
       defmacro unquote(:"uk_#{name}")([{_k, _v} | _rest] = opts, do: block) when is_list(opts) do
-      	name = :"uk_#{unquote(name)}"
-      	quote location: :keep do
-      	  unquote(name)([], unquote(opts), do: unquote(block))
-      	end
+        name = :"uk_#{unquote(name)}"
+
+        quote location: :keep do
+          unquote(name)([], unquote(opts), do: unquote(block))
+        end
       end
 
       defmacro unquote(:"uk_#{name}")(styles, do: block) when is_list(styles) do
         name = :"uk_#{unquote(name)}"
+
         quote location: :keep do
           unquote(name)(unquote(styles), [], do: unquote(block))
         end
@@ -221,8 +246,9 @@ defmodule UIKit do
       defmacro unquote(:"uk_#{name}")(content \\ "")
 
       # uk_tag() do "foo" end
-      defmacro unquote(:"uk_#{name}")([do: content]) do        
+      defmacro unquote(:"uk_#{name}")(do: content) do
         name = :"uk_#{unquote(name)}"
+
         quote do
           unquote(name)([], [], do: unquote(content))
         end
@@ -231,6 +257,7 @@ defmodule UIKit do
       # uk_tag(:divider)
       defmacro unquote(:"uk_#{name}")(style) when is_atom(style) do
         name = :"uk_#{unquote(name)}"
+
         quote do
           unquote(name)([unquote(style)], [], do: nil)
         end
@@ -239,6 +266,7 @@ defmodule UIKit do
       # uk_tag("foo")
       defmacro unquote(:"uk_#{name}")(opts) when is_list(opts) do
         name = :"uk_#{unquote(name)}"
+
         quote do
           unquote(name)([], unquote(opts), do: nil)
         end
@@ -247,6 +275,7 @@ defmodule UIKit do
       # uk_tag("foo")
       defmacro unquote(:"uk_#{name}")(content) do
         name = :"uk_#{unquote(name)}"
+
         quote do
           unquote(name)([], [], do: unquote(content))
         end
@@ -266,12 +295,12 @@ defmodule UIKit do
 
   """
   defmacro defstyle(name, opts \\ []) do
-    quote location: :keep, bind_quoted: [
-      name: name,
-      seed: Keyword.get(opts, :seed, :empty),
-      attr: Keyword.get(opts, :attr, false),
-    ] do
-
+    quote location: :keep,
+          bind_quoted: [
+            name: name,
+            seed: Keyword.get(opts, :seed, :empty),
+            attr: Keyword.get(opts, :attr, false)
+          ] do
       defmacro unquote(name)(styles \\ [])
 
       # TODO: check for allowed styles and component_options (maybe only in dev?)
@@ -304,10 +333,11 @@ defmodule UIKit do
 
   """
   defmacro defboolean(name, opts \\ []) do
-    quote location: :keep, bind_quoted: [
-      name: name,
-      bool: Keyword.get(opts, :bool, name),
-    ] do
+    quote location: :keep,
+          bind_quoted: [
+            name: name,
+            bool: Keyword.get(opts, :bool, name)
+          ] do
       bool_name = :"uk_#{bool}"
 
       defmacro unquote(name)() do
@@ -315,7 +345,7 @@ defmodule UIKit do
 
         quote location: :keep do
           attr([{unquote(bool_name), true}])
-        end      
+        end
       end
     end
   end
@@ -329,8 +359,7 @@ defmodule UIKit do
 
   """
   defmacro defdata(_name, _opts \\ []) do
-    quote location: :keep, bind_quoted: [
-    ] do
+    quote location: :keep, bind_quoted: [] do
     end
   end
 end

@@ -1,19 +1,26 @@
 defmodule UIKit.Element.Style do
   import UIKit
 
-  defstyle :parent
+  defstyle(:parent)
 
-  defstyle :active
-  defstyle :disabled
+  defstyle(:active)
+  defstyle(:disabled)
 
-  defstyle :align,
-    styles: (for col <- [:left, :center, :right], bp <- [:s, :m, :l, :xl], do: "uk-align-#{col}@{bp}")
+  defstyle(
+    :align,
+    styles:
+      for(
+        col <- [:left, :center, :right],
+        bp <- [:s, :m, :l, :xl],
+        do: "uk-align-#{col}@{bp}"
+      )
+  )
 
-  defcomponent :light
-  defstyle :light
+  defcomponent(:light)
+  defstyle(:light)
 
-  defcomponent :dark
-  defstyle :dark
+  defcomponent(:dark)
+  defstyle(:dark)
 
   def margin_styles do
     [
@@ -61,77 +68,104 @@ defmodule UIKit.Element.Style do
       :auto_bottom,
       :auto_left,
       :auto_right,
-      :auto_vertical,
+      :auto_vertical
     ]
   end
 
-  defcomponent :margin,
+  defcomponent(
+    :margin,
     seed: :empty,
-    styles: __MODULE__.margin_styles,
+    styles: __MODULE__.margin_styles(),
     component_options: [
       :margin,
       :first_column
-    ]    
-  defstyle :margin,
-    styles: __MODULE__.margin_styles,
+    ]
+  )
+
+  defstyle(
+    :margin,
+    styles: __MODULE__.margin_styles(),
     component_options: [
       :margin,
       :first_column
-    ]    
-  defboolean :child_margins,
-    bool: :margin
+    ]
+  )
 
-  defcomponent :panel,
+  defboolean(:child_margins, bool: :margin)
+
+  defcomponent(
+    :panel,
     styles: [
       :scrollable
     ]
-  defstyle :panel,
+  )
+
+  defstyle(
+    :panel,
     styles: [
       :scrollable
     ]
+  )
 
-  defstyle :float,
+  defstyle(
+    :float,
     styles: [
       :left,
       :right
     ]
+  )
 
-  defstyle :clearfix
+  defstyle(:clearfix)
 
-  defcomponent :overflow,
+  defcomponent(
+    :overflow,
     seed: :empty,
     styles: [
       :hidden,
       :auto
     ]
-  defstyle :overflow,
+  )
+
+  defstyle(
+    :overflow,
     styles: [
       :hidden,
       :auto
     ]
+  )
 
-  defstyle :resize,
+  defstyle(
+    :resize,
     styles: [
       :vertical
     ]
+  )
 
-  defstyle :display,
+  defstyle(
+    :display,
     styles: [
       :block,
       :inline,
       :inline_block
     ]
+  )
 
-  defcomponent :inline,
+  defcomponent(
+    :inline,
     styles: [
       :clip
     ]
-  defstyle :inline,
+  )
+
+  defstyle(
+    :inline,
     styles: [
       :clip
     ]
+  )
 
-  defstyle :height,
+  defstyle(
+    :height,
     styles: [
       :"1_1",
       :small,
@@ -141,34 +175,44 @@ defmodule UIKit.Element.Style do
       :large,
       :max_large
     ]
+  )
 
-  defstyle :height_viewport,
+  defstyle(
+    :height_viewport,
     component_options: [
       :offset_top,
       :offset_bottom,
       :expand
     ]
+  )
 
-  defstyle :height_match,
+  defstyle(
+    :height_match,
     component_options: [
       :target,
       :row
     ]
+  )
 
-  defstyle :responsive,
+  defstyle(
+    :responsive,
     styles: [
       :width,
       :height
     ]
+  )
 
-  defstyle :border,
+  defstyle(
+    :border,
     styles: [
       :rounded,
       :circle
     ]
+  )
 
   # TODO: figured out how to join defstyle/defcomonent
-  defcomponent :box_shadow,
+  defcomponent(
+    :box_shadow,
     seed: :empty,
     styles: [
       # size
@@ -184,7 +228,10 @@ defmodule UIKit.Element.Style do
       :hover_large,
       :hover_xlarge
     ]
-  defstyle :box_shadow,
+  )
+
+  defstyle(
+    :box_shadow,
     styles: [
       # size
       :small,
@@ -199,33 +246,41 @@ defmodule UIKit.Element.Style do
       :hover_large,
       :hover_xlarge
     ]
+  )
 
-  defcomponent :dropcap,
-    tag: :p
-  defstyle :dropcap
+  defcomponent(:dropcap, tag: :p)
+  defstyle(:dropcap)
 
   # TODO: this one is weird, somehow the options for :leader (just above are
   # passed in as sibling attributes. This does not match the rest of UIKit
-  defstyle :leader,
+  defstyle(
+    :leader,
     seed: :never,
     attr: true,
     component_options: [
       :fill,
       :media
     ]
+  )
 
-  defstyle :logo,
+  defstyle(
+    :logo,
     styles: [
       :inverse
     ]
+  )
 
-  defstyle :svg,
+  defstyle(
+    :svg,
     attr: true,
     allowed_tags: [:img]
+  )
 
-  defstyle :gif,
+  defstyle(
+    :gif,
     attr: true,
     allowed_tags: [:img]
+  )
 
   # defstyle :video,
   #   attr: true,
@@ -234,7 +289,8 @@ defmodule UIKit.Element.Style do
   #     :automute
   #   ]
 
-  defstyle :blend,
+  defstyle(
+    :blend,
     styles: [
       :multiply,
       :screen,
@@ -252,10 +308,12 @@ defmodule UIKit.Element.Style do
       :color,
       :luminosity
     ]
+  )
 
-  defstyle :transform_center
+  defstyle(:transform_center)
 
-  defstyle :transform_origin,
+  defstyle(
+    :transform_origin,
     styles: [
       :top_left,
       :top_center,
@@ -264,8 +322,9 @@ defmodule UIKit.Element.Style do
       :center_right,
       :bottom_left,
       :bottom_center,
-      :bottom_right,
+      :bottom_right
     ]
+  )
 
   # defboolean :disabled,
   #   allowed_tags: [
@@ -275,9 +334,10 @@ defmodule UIKit.Element.Style do
   #     :button
   #   ]
 
-  defstyle :drag
+  defstyle(:drag)
 
-  defstyle :hidden,
+  defstyle(
+    :hidden,
     styles: [
       # breakpoints
       :"@s",
@@ -290,8 +350,10 @@ defmodule UIKit.Element.Style do
       :touch,
       :notouch
     ]
+  )
 
-  defstyle :visible,
+  defstyle(
+    :visible,
     styles: [
       # breakpoints
       :"@s",
@@ -301,13 +363,17 @@ defmodule UIKit.Element.Style do
       # toggle
       :toggle
     ]
+  )
 
-  defstyle :invisible,
+  defstyle(
+    :invisible,
     styles: [
       :hover
     ]
+  )
 
-  defcomponent :width,
+  defcomponent(
+    :width,
     seed: :empty,
     styles: [
       # columns
@@ -333,14 +399,16 @@ defmodule UIKit.Element.Style do
       :xlare,
       :xxlarge,
       # responsive
-      :"*",
+      :*,
       :"*@s",
       :"*@m",
       :"*@l",
-      :"*@xl",
+      :"*@xl"
     ]
+  )
 
-  defstyle :width,
+  defstyle(
+    :width,
     seed: :empty,
     styles: [
       # columns
@@ -366,14 +434,16 @@ defmodule UIKit.Element.Style do
       :xlare,
       :xxlarge,
       # responsive
-      :"*",
+      :*,
       :"*@s",
       :"*@m",
       :"*@l",
-      :"*@xl",
+      :"*@xl"
     ]
+  )
 
-  defstyle :child_width,
+  defstyle(
+    :child_width,
     seed: :empty,
     styles: [
       # columns
@@ -393,10 +463,11 @@ defmodule UIKit.Element.Style do
       :auto,
       :expand,
       # responsive
-      :"*",
+      :*,
       :"*@s",
       :"*@m",
       :"*@l",
-      :"*@xl",
+      :"*@xl"
     ]
+  )
 end
