@@ -7,7 +7,7 @@ defmodule UIKit.Mixfile do
 
   def project do
     [
-      app: :uikit_ex,
+      app: :uikit,
       version: @version,
       elixir: "~> 1.5",
       elixirc_paths: elixirc_paths(Mix.env()),
@@ -44,7 +44,8 @@ defmodule UIKit.Mixfile do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:taggart, "~> 0.1"},
+      # {:taggart, "~> 0.1"},
+      {:taggart, github: "ijcd/taggart"},
       # {:taggart, path: "~/work/taggart"},
 
       # docs

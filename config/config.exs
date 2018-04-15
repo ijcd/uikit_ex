@@ -10,11 +10,11 @@ use Mix.Config
 
 # You can configure your application as:
 #
-#     config :uikit_ex, key: :value
+#     config :uikit, key: :value
 #
 # and access this configuration in your application as:
 #
-#     Application.get_env(:uikit_ex, :key)
+#     Application.get_env(:uikit, :key)
 #
 # You can also configure a 3rd-party app:
 #
@@ -29,10 +29,10 @@ use Mix.Config
 #
 #     import_config "#{Mix.env}.exs"
 
-if Mix.env == :dev do
+if Mix.env() == :dev do
   config :mix_test_watch,
     tasks: [
-      "test",
+      "test"
       # "dialyzer",
       # "credo",
     ]
