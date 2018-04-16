@@ -44,8 +44,8 @@ defmodule UIKit.Mixfile do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      # {:taggart, "~> 0.1"},
-      {:taggart, github: "ijcd/taggart"},
+      {:taggart, "~> 0.1.5"},
+      # {:taggart, github: "ijcd/taggart"},
       # {:taggart, path: "~/work/taggart"},
 
       # docs

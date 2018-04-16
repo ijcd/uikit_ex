@@ -13,5 +13,5 @@
   "phoenix_html": {:hex, :phoenix_html, "2.11.2", "86ebd768258ba60a27f5578bec83095bdb93485d646fc4111db8844c316602d6", [:mix], [{:plug, "~> 1.5", [hex: :plug, repo: "hexpm", optional: false]}], "hexpm"},
   "plug": {:hex, :plug, "1.5.0", "224b25b4039bedc1eac149fb52ed456770b9678bbf0349cdd810460e1e09195b", [], [{:cowboy, "~> 1.0.1 or ~> 1.1 or ~> 2.1", [hex: :cowboy, repo: "hexpm", optional: true]}, {:mime, "~> 1.0", [hex: :mime, repo: "hexpm", optional: false]}], "hexpm"},
   "stream_data": {:hex, :stream_data, "0.2.0", "887b7701cd4ea235e0d704ce60f86096ff5754dae55c3ead4e1d43f152a9239e", [:mix], []},
-  "taggart": {:git, "https://github.com/ijcd/taggart.git", "60c1e7c32738a48ad132946a87db55f40e7dd548", []},
+  "taggart": {:hex, :taggart, "0.1.5", "c0e2a86a08ccebccae7a7d6ae4db1aba89689d1bf1f61d07e88d4f36839cfc44", [:mix], [{:floki, "~> 0.17", [hex: :floki, repo: "hexpm", optional: true]}, {:phoenix_html, "~> 2.10", [hex: :phoenix_html, repo: "hexpm", optional: false]}], "hexpm"},
 }
